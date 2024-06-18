@@ -1,6 +1,5 @@
 package com.semicolon.africa.electionManagementSystem.models;
 
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -14,25 +13,24 @@ import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
 
-
 @Getter
-@Table(name ="candidates")
 @Setter
+@Table(name = "Elections")
 @Entity
-public class Candidate {
+public class Election {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long candidateId;
-    private String firstName;
-    private String lastName;
-    private String username;
-    @Column(unique = true)
-    private String email;
-    private String password;
-    private Category positionContested;
-    private String partyAffiliation;
-    @ManyToOne
-    private Election election;
+    private long electionId;
+    private String title;
+    @Setter(AccessLevel.NONE)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime startDate;
+    @Setter(AccessLevel.NONE)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime endDate;
+    private Category category;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -41,6 +39,8 @@ public class Candidate {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
+
+
 
     @PrePersist
     private void setTimeCreated() {

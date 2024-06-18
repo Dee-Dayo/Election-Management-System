@@ -1,4 +1,8 @@
 package com.semicolon.africa.electionManagementSystem.repositories;
 
-public interface VoterRepository {
+import com.semicolon.africa.electionManagementSystem.models.Voter;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface VoterRepository extends JpaRepository<Voter, Long> {
+
 }

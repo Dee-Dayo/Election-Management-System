@@ -18,18 +18,18 @@ public class CandidateServiceTest {
     @Test
     public void testRegisterCandidate_ListOfCandidatesIncreases() {
         RegisterCandidateRequest request = new RegisterCandidateRequest();
-        request.setFirstName("Bola");
+        request.setFirstName("Ahmed");
         request.setLastName("Tinubu");
-        request.setEmail("bola@gmail.com");
+        request.setEmail("huchogrey73@gmail.com");
         request.setPassword("123456");
         request.setPartyAffiliation(APC);
-//        request.setElectionId(1L);
+        request.setElectionId(200L);
         request.setUsername("Bat");
         request.setPositionContested(NATIONAL);
         RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
         assertThat(response).isNotNull();
         assertThat(response.getCandidateId()).isNotNull();
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
 
     }
 }

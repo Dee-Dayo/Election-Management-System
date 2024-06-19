@@ -30,7 +30,7 @@ public class Candidate {
     private String email;
     private String password;
     private Category positionContested;
-    private String partyAffiliation;
+    private PartyAffiliation partyAffiliation;
     @ManyToOne
     private Election election;
     @Setter(AccessLevel.NONE)

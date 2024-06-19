@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class ElectionCandidateService implements CandidateService {
     private final CandidateRepository candidates;
+    private final ModelMapper modelMapper;
 
     @Override
     public RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request) {
@@ -23,7 +24,7 @@ public class ElectionCandidateService implements CandidateService {
                         .equals(request.getPartyAffiliation())) {
                     throw new NoVoterFoundException("candidate under " + request.getPartyAffiliation()+ " exists for "+request.getPositionContested());
                 }});
-        ModelMapper modelMapper = new ModelMapper();
+
         Candidate candidate = modelMapper.map(request, Candidate.class);
         candidates.save(candidate);
         RegisterCandidateResponse response = modelMapper.map(candidate, RegisterCandidateResponse.class);

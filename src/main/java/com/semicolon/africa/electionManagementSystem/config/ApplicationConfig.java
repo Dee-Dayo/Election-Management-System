@@ -1,6 +1,7 @@
 package com.semicolon.africa.electionManagementSystem.config;
 
 
+import com.semicolon.africa.electionManagementSystem.services.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final UserDetailsService service;
+    private final UserDetailsServiceImpl service;
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> service.loadUserByUsername(username);

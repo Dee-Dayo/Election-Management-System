@@ -3,6 +3,7 @@ package com.semicolon.africa.electionManagementSystem.services;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Election;
 import com.semicolon.africa.electionManagementSystem.models.Schedule;
 import com.semicolon.africa.electionManagementSystem.repositories.AdminRepository;
@@ -38,8 +39,12 @@ public class ElectionManagementService implements AdminService{
     }
 
     @Override
-    public ElectionScheduledResponse getElectionSchedule(int electionId) {
-        return null;
+    public ElectionScheduledResponse getElectionSchedule(Long electionId) {
+        Election foundElection = electionRepository.getElectionByElectionId(electionId);
+        if (foundElection == null) {
+            throw new ElectionNotFoundException(String.format("Election %d not found",electionId));
+        }
+        return new ModelMapper().map(foundElection,ElectionScheduledResponse.class);
     }
 
 

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 public interface AdminService {
     ScheduleElectionResponse scheduleElection(ScheduleElectionRequest request);
 
-    ElectionScheduledResponse getElectionSchedule(int electionId);
+    ElectionScheduledResponse getElectionSchedule(Long electionId);
 }

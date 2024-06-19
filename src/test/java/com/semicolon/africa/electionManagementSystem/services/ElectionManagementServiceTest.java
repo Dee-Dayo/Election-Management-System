@@ -1,6 +1,7 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
 import com.semicolon.africa.electionManagementSystem.models.Category;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,18 @@ class ElectionManagementServiceTest {
     @Sql(scripts = "/db/data.sql")
     @Test
     public void checkElectionStatus_Test(){
-        adminService.getElectionSchedule(11);
+
+        ElectionScheduledResponse response = adminService.getElectionSchedule(11L);
+        assertThat(response).isNotNull();
+        assertThat(response.getElectionId()).isEqualTo(11);
+        assertThat(response.getSchedule()).isEqualTo(SCHEDULED);
+    }
+
+    @Sql(scripts = "/db/data.sql")
+    @Test
+    public void startElection_ElectionStartsTest(){
+
+
     }
 
 

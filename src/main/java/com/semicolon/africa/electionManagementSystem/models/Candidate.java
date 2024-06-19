@@ -12,6 +12,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDateTime.now;
 
 
@@ -21,7 +23,7 @@ import static java.time.LocalDateTime.now;
 @Entity
 public class Candidate {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private  Long candidateId;
     private String firstName;
     private String lastName;
@@ -29,9 +31,12 @@ public class Candidate {
     @Column(unique = true)
     private String email;
     private String password;
+    @Enumerated(value = STRING)
     private Category positionContested;
+    @Enumerated(value = STRING)
     private PartyAffiliation partyAffiliation;
     @ManyToOne
+    @JoinColumn(name="election_id")
     private Election election;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -50,4 +55,10 @@ public class Candidate {
     private void setTimeUpdated() {
         timeUpdated = now();
     }
+
+    public static void main(String[] args) {
+        System.out.println(LocalDateTime.now());
+    }
+
 }
+

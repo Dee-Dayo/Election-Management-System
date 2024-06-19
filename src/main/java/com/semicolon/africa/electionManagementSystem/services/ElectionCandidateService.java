@@ -2,6 +2,7 @@ package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import lombok.AllArgsConstructor;
@@ -15,9 +16,15 @@ public class ElectionCandidateService implements CandidateService {
 
     @Override
     public RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request) {
+        candidates
+                .findAll()
+                .forEach(candidate -> {if (candidate.getPositionContested()
+                        .equals(request.getPositionContested()) && candidate.getPartyAffiliation()
+                        .equals(request.getPartyAffiliation())) {
+                    throw new NoVoterFoundException("candidate under " + request.getPartyAffiliation()+ " exists for "+request.getPositionContested());
+                }});
         ModelMapper modelMapper = new ModelMapper();
         Candidate candidate = modelMapper.map(request, Candidate.class);
-        //find election by id and put into the model
         candidates.save(candidate);
         RegisterCandidateResponse response = modelMapper.map(candidate, RegisterCandidateResponse.class);
         response.setMessage("Candidate Successfully registered");

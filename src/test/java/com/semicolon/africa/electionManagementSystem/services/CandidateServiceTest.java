@@ -67,4 +67,9 @@ public class CandidateServiceTest {
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(7L);
         log.info("Number of candidates: {}", candidateService.getNumberOfCandidates());
     }
+
+    @Test
+    public void viewResultTest(){
+
+    }
 }

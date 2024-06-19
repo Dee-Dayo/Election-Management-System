@@ -16,7 +16,7 @@ import static java.time.LocalDateTime.now;
 
 @Getter
 @Setter
-@Table(name = "voter")
+@Table(name = "voters")
 @Entity
 public class Voter {
     @Id

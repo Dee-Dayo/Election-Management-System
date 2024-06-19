@@ -4,13 +4,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Setter
 @Getter
 @Entity
 @Table(name="votes")
 public class Vote {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long voteId;
     @OneToOne
     private Candidate candidate;

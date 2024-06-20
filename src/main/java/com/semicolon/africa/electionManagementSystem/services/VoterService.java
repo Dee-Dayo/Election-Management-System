@@ -12,4 +12,6 @@ public interface VoterService {
     VoterRegistrationResponse registerVoter(VoterRegistrationRequest registrationRequest);
 
     List<Voter> getNumberOfVoters();
+
+    Voter findVoterBy(Long voterId);
 }

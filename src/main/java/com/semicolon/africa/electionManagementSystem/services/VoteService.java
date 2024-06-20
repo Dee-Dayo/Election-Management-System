@@ -1,5 +1,6 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.semicolon.africa.electionManagementSystem.dtos.requests.AddVoteRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CountCandidateVoteRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.AddVoteResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;

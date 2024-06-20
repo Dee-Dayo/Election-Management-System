@@ -7,4 +7,5 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface VoterRepository extends JpaRepository<Voter, Long> {
 
     Voter findByEmail(String username);
+
 }

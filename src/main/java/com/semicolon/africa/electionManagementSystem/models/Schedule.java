@@ -1,0 +1,8 @@
+package com.semicolon.africa.electionManagementSystem.models;
+
+public enum Schedule {
+    SCHEDULED,
+    NOT_SCHEDULED,
+    ONGOING,
+    ENDED
+}

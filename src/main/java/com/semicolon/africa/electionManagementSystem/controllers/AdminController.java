@@ -1,4 +1,5 @@
 package com.semicolon.africa.electionManagementSystem.controllers;
 
-public class AdminController {
+public class  AdminController {
+
 }

@@ -56,9 +56,6 @@ public class Candidate {
         timeUpdated = now();
     }
 
-    public static void main(String[] args) {
-        System.out.println(LocalDateTime.now());
-    }
 
 }
 

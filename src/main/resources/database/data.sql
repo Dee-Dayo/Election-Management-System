@@ -23,8 +23,7 @@ insert into candidates(candidate_id, first_name, last_name, username, email, pas
 
 insert into voters(voter_id, first_name, last_name, date_of_birth, state_of_origin, email, password, time_created)
 values
-(200, 'Rebecca', 'Nelson', '20-05-1999', 'Lagos', 'Darhyor2050@gmail.com', 'password',
- '2024-06-19T09:52:36.836436300'),
+(200, 'Rebecca', 'Nelson', '20-05-1999', 'Lagos', 'Darhyor2050@gmail.com', 'password', '2024-06-19T09:52:36.836436300'),
 (201, 'Bankole', 'Taiwo', '20-05-2000', 'Ogun', 'babsmoh12@gmail.com', 'password', '2024-06-19T09:52:36.836436300'),
 (202, 'Rukkayah', 'Akeem', '20-05-1970', 'Delta', 'Josephfeyishetan@gmail.com', 'password', '2024-06-19T09:52:36.836436300'),
 (203, 'Faith', 'Joseph', '20-05-1991', 'Osun', 'm.yaro@native.semicolon.africa', 'password', '2024-06-19T09:52:36.836436300');

@@ -2,18 +2,24 @@ package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class ElectionCandidateService implements CandidateService {
     private final CandidateRepository candidates;
     private final ModelMapper modelMapper;
+    private final VoteService voteService;
+
+    public ElectionCandidateService(VoteService voteService, ModelMapper modelMapper, CandidateRepository candidates) {
+        this.modelMapper = modelMapper;
+        this.candidates = candidates;
+        this.voteService = voteService;
+    }
 
     @Override
     public RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request) {
@@ -37,7 +43,15 @@ public class ElectionCandidateService implements CandidateService {
         return candidates.count();
     }
 
+    @Override
+    public Candidate findCandidateBy(Long candidateId) {
+        return candidates.findById(candidateId).orElse(null);
+    }
 
+    @Override
+    public ShowElectionResultResponse viewElectionResultFor(Long electionId) {
+        return voteService.showResult(electionId);
+    }
 
 
 }

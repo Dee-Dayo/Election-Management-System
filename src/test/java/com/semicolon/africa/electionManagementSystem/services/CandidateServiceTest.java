@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import static com.semicolon.africa.electionManagementSystem.models.Category.NATIONAL;
 import static com.semicolon.africa.electionManagementSystem.models.Category.STATE;
@@ -23,6 +24,7 @@ public class CandidateServiceTest {
     CandidateService candidateService;
 
     @Test
+    @Sql(scripts = "/db/data.sql")
     public void testRegisterCandidate_ListOfCandidatesIncreases() {
         RegisterCandidateRequest request = new RegisterCandidateRequest();
         request.setFirstName("Ahmed");
@@ -40,6 +42,7 @@ public class CandidateServiceTest {
     }
 
     @Test
+    @Sql(scripts = "/db/data.sql")
     public void testRegisterCandidateForSameCategoryAndSameParty_listRemainsTheSame(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
         request.setFirstName("Femi");
@@ -69,7 +72,9 @@ public class CandidateServiceTest {
     }
 
     @Test
+    @Sql(scripts = "/db/data.sql")
     public void viewResultTest(){
-
+        var result = candidateService.viewElectionResultFor(200L);
+        assertThat(result).isNotNull();
     }
 }

@@ -1,0 +1,16 @@
+package com.semicolon.africa.electionManagementSystem.dtos.requests;
+
+import com.semicolon.africa.electionManagementSystem.models.Category;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
+public class ScheduleElectionRequest {
+    private String electionTitle;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private Category category;
+
+
+}

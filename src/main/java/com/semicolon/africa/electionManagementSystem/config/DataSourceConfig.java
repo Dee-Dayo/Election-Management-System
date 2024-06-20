@@ -12,9 +12,9 @@ public class DataSourceConfig {
     @Bean
     public DataSource dataSource(){
             HikariDataSource dataSource = new HikariDataSource();
-            dataSource.setJdbcUrl("jdbc:postgresql://localhost/election_db");
+            dataSource.setJdbcUrl("jdbc:postgresql://localhost/election_management_system");
             dataSource.setUsername("postgres");
-            dataSource.setPassword(" ");
+            dataSource.setPassword("SQLpassword");
             return dataSource;
     }
 }

@@ -2,22 +2,24 @@ package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.CandidateNotFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ElectionCandidateService implements CandidateService {
-    private final CandidateRepository candidates;
-    private final ModelMapper modelMapper;
+    @Autowired
+    private CandidateRepository candidates;
+    @Autowired
+    private ModelMapper modelMapper;
     private final VoteService voteService;
 
-    public ElectionCandidateService(VoteService voteService, ModelMapper modelMapper, CandidateRepository candidates) {
-        this.modelMapper = modelMapper;
-        this.candidates = candidates;
+    public ElectionCandidateService(VoteService voteService) {
         this.voteService = voteService;
     }
 
@@ -45,11 +47,11 @@ public class ElectionCandidateService implements CandidateService {
 
     @Override
     public Candidate findCandidateBy(Long candidateId) {
-        return candidates.findById(candidateId).orElse(null);
+        return candidates.findById(candidateId).orElseThrow(()-> new CandidateNotFoundException("candidate not found"));
     }
 
     @Override
-    public ShowElectionResultResponse viewElectionResultFor(Long electionId) {
+    public Object viewElectionResultFor(long electionId) {
         return voteService.showResult(electionId);
     }
 

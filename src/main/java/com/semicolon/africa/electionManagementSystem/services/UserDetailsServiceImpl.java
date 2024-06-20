@@ -19,11 +19,7 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails userDetails = voters.findByEmail(username);
         if(userDetails == null)  userDetails = admins.findByEmail(username);
-        if(userDetails == null) try {
-            throw new UserNotFoundException("User Not Found");
-        } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        if(userDetails == null) throw new UsernameNotFoundException("User Not Found");
         return userDetails;
     }
 }

@@ -5,8 +5,11 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElect
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 public interface AdminService {
@@ -17,4 +20,8 @@ public interface AdminService {
     RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request);
 
     Election getElection(Long electionId);
+
+    Election findElectionBy(Long electionId);
+
+    List<Candidate> getElectionCandidates(Long electionId);
 }

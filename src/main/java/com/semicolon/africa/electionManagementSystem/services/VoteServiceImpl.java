@@ -1,5 +1,6 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.semicolon.africa.electionManagementSystem.dtos.requests.AddVoteRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CountCandidateVoteRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.AddVoteResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
@@ -30,7 +31,7 @@ public class VoteServiceImpl implements VoteService {
         Election election = adminService.getElection(request.getElectionId());
         Vote vote = new Vote();
         vote.setVoter(voter);
-        vote.setCandidate(candidate);
+//        vote.setCandidate(candidate);
         vote.setElection(election);
         VoterResponse voterResponse = mapper.map(voter,VoterResponse.class);
         AddVoteResponse addVoteResponse =  mapper.map(vote,AddVoteResponse.class);
@@ -40,12 +41,12 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public Long countElectionVote(Long electionId) {
-        return votes.findByElectionid(electionId);
+        return 0L;
     }
 
     @Override
     public Long countVoteForCandidate(CountCandidateVoteRequest request) {
-        return votes.countVoteForCandidate(request.getElectionId(),candidateService.findCandidateBy(request.getCandidateId()));
+        return votes.countVoteForCandidate(request.getElectionId(),candidateService.findCandidateBy(request.getCandidateId()).getCandidateId());
     }
 
     @Override

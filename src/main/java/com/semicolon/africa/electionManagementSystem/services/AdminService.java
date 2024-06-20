@@ -1,4 +1,20 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
-public class AdminService {
+import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.models.Election;
+import org.springframework.stereotype.Service;
+
+
+public interface AdminService {
+    ScheduleElectionResponse scheduleElection(ScheduleElectionRequest request);
+
+    ElectionScheduledResponse getElectionSchedule(Long electionId);
+
+    RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request);
+
+    Election getElection(Long electionId);
 }

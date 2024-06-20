@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDateTime.now;
 
 
@@ -26,7 +28,7 @@ import static java.time.LocalDateTime.now;
 @Entity
 public class Candidate implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private  Long candidateId;
     private String firstName;
     private String lastName;
@@ -34,10 +36,12 @@ public class Candidate implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
-    private Role role;
+    @Enumerated(value = STRING)
     private Category positionContested;
-    private String partyAffiliation;
+    @Enumerated(value = STRING)
+    private PartyAffiliation partyAffiliation;
     @ManyToOne
+    @JoinColumn(name="election_id")
     private Election election;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -82,3 +86,4 @@ public class Candidate implements UserDetails {
         return true;
     }
 }
+

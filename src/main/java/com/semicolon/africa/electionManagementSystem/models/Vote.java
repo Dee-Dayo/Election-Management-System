@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Setter
 @Getter
 @Entity
@@ -12,10 +14,9 @@ import lombok.Setter;
 @Table(name="votes")
 public class Vote {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long voteId;
-    @OneToOne
-    private Candidate candidate;
+    private PartyAffiliation affiliation;
     @OneToOne
     private Voter voter;
     @ManyToOne

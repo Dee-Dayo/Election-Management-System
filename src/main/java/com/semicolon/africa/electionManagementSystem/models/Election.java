@@ -11,16 +11,18 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDateTime.now;
 
 @Getter
 @Setter
-@Table(name = "Elections")
+@Table(name = "elections")
 @Entity
 public class Election {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long electionId;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long electionId;
     private String title;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -30,7 +32,9 @@ public class Election {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime endDate;
+    @Enumerated(value = STRING)
     private Category category;
+    private Schedule schedule;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

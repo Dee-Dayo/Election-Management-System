@@ -45,5 +45,28 @@ public class VoterServiceTest {
         assertThrows(VoterAlreadyExistException.class, ()->voterService.registerVoter(registrationRequest));
 
     }
+//    @Test
+//    public void registerMoreThanOneVoter_registerVoterTest() {
+//        VoterRegistrationRequest registrationRequest = new VoterRegistrationRequest();
+//        registrationRequest.setFirstName("John");
+//        registrationRequest.setLastName("Doe");
+//        registrationRequest.setEmail("john@doe.com");
+//        registrationRequest.setDateOfBirth("01/01/1990");
+//        registrationRequest.setStateOfOrigin("Lagos");
+//        registrationRequest.setPassword("password");
+//        VoterRegistrationResponse response = voterService.registerVoter(registrationRequest);
+//
+//        VoterRegistrationRequest registrationRequest1 = new VoterRegistrationRequest();
+//        registrationRequest.setFirstName("Jane");
+//        registrationRequest.setLastName("Doe");
+//        registrationRequest.setEmail("jane@doe.com");
+//        registrationRequest.setDateOfBirth("01/01/1990");
+//        registrationRequest.setStateOfOrigin("Lagos");
+//        registrationRequest.setPassword("password");
+//        VoterRegistrationResponse response1 = voterService.registerVoter(registrationRequest);
+//
+//        assertEquals(6, voterService.getNumberOfVoters().size());
+//    }
+
 
 }

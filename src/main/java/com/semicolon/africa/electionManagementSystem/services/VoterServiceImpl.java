@@ -35,4 +35,5 @@ public class VoterServiceImpl implements VoterService {
         return voterRepository.findAll();
     }
 
+
 }

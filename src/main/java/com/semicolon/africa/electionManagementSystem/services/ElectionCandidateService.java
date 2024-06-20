@@ -37,7 +37,10 @@ public class ElectionCandidateService implements CandidateService {
         return candidates.count();
     }
 
-
+    @Override
+    public Candidate findCandidateBy(Long candidateId) {
+        return null;
+    }
 
 
 }

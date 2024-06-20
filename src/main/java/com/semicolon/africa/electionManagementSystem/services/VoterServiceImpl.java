@@ -35,5 +35,12 @@ public class VoterServiceImpl implements VoterService {
         return voterRepository.findAll();
     }
 
+<<<<<<< HEAD
 
+=======
+    @Override
+    public Voter findVoterBy(Long voterId) {
+        return null;
+    }
+>>>>>>> e92bd2cbacc5892350636f531552d8247f05b9fc
 }

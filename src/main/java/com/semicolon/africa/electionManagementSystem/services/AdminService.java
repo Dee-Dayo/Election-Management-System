@@ -5,6 +5,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElect
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.models.Election;
 import org.springframework.stereotype.Service;
 
 
@@ -14,4 +15,6 @@ public interface AdminService {
     ElectionScheduledResponse getElectionSchedule(Long electionId);
 
     RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request);
+
+    Election getElection(Long electionId);
 }

@@ -5,6 +5,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElect
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.DeniedAccessException;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
@@ -37,6 +38,7 @@ public class ElectionManagementService implements AdminService{
         //View Election Results
         //Calculate Results for Election
         //Check if Election Category correlates with position contested
+        //Get Election Method- Returns Election
     @Override
     public ScheduleElectionResponse scheduleElection(ScheduleElectionRequest request) {
         ModelMapper mapper = new ModelMapper();
@@ -58,10 +60,8 @@ public class ElectionManagementService implements AdminService{
 
     @Override
     public RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request) {
-        Election election = electionRepository.getElectionByElectionId(request.getElectionId());
-        if (election == null) {
-            throw new ElectionNotFoundException(String.format("No Scheduled Election with id: %d", request.getElectionId()));
-        }
+        Election election = getElection(request.getElectionId());
+        if (election.getCategory() != request.getPositionContested())throw new DeniedAccessException("Candidate cannot contest in this election category");
         ModelMapper modelMapper = configure(new ModelMapper());
         Candidate candidate = modelMapper.map(request, Candidate.class);
         Candidate savedCandidate = candidateRepository.save(candidate);
@@ -69,6 +69,15 @@ public class ElectionManagementService implements AdminService{
         response.setMessage("Candidate registered successfully");
 
         return response;
+    }
+
+    @Override
+    public Election getElection(Long electionId) {
+        Election election = electionRepository.getElectionByElectionId(electionId);
+        if (election == null) {
+            throw new ElectionNotFoundException(String.format("No Scheduled Election with id: %d", electionId));
+        }
+        return election;
     }
 
     private static ModelMapper configure(ModelMapper modelMapper) {

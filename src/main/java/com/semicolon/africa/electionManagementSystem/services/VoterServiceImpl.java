@@ -1,14 +1,12 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.VoterAlreadyExistException;
 import com.semicolon.africa.electionManagementSystem.models.Voter;
 import com.semicolon.africa.electionManagementSystem.repositories.VoterRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -21,12 +19,13 @@ public class VoterServiceImpl implements VoterService {
     @Override
     public VoterRegistrationResponse registerVoter(VoterRegistrationRequest registrationRequest) {
 
-        Voter voter;
+        Voter voter = new Voter();
+        Voter registeredVoter = voterRepository.findByEmail(registrationRequest.getEmail());
+        if (registeredVoter != null) throw new VoterAlreadyExistException(voter.getEmail() + " already exist");
         voter = modelMapper.map(registrationRequest, Voter.class);
-        Voter savedVoter = voterRepository.save(voter);
+        voter = voterRepository.save(voter);
 
-        VoterRegistrationResponse registrationResponse;
-        registrationResponse = modelMapper.map(voter, VoterRegistrationResponse.class);
+        VoterRegistrationResponse registrationResponse = modelMapper.map(voter, VoterRegistrationResponse.class);
         registrationResponse.setMessage("Voter Registered Successfully");
         return registrationResponse;
     }
@@ -35,4 +34,5 @@ public class VoterServiceImpl implements VoterService {
     public List<Voter> getNumberOfVoters() {
         return voterRepository.findAll();
     }
+
 }

@@ -1,7 +1,9 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
 import com.semicolon.africa.electionManagementSystem.models.Category;
 import org.junit.jupiter.api.Test;
@@ -12,9 +14,11 @@ import org.springframework.test.context.jdbc.Sql;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHEDULED;
+import static com.semicolon.africa.electionManagementSystem.models.Category.LGA;
+import static com.semicolon.africa.electionManagementSystem.models.Category.NATIONAL;
+import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.APC;
+import static com.semicolon.africa.electionManagementSystem.models.Schedule.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ElectionManagementServiceTest {
@@ -47,8 +51,34 @@ class ElectionManagementServiceTest {
 
     @Sql(scripts = "/db/data.sql")
     @Test
-    public void startElection_ElectionStartsTest(){
+    public void registerCandidate_CandidateIsRegisteredTest(){
+        RegisterCandidateRequest request = new RegisterCandidateRequest();
+        request.setElectionId(11L);
+        request.setFirstName("Dayo");
+        request.setLastName("Akinyemi");
+        request.setPartyAffiliation(APC);
+        request.setPositionContested(NATIONAL);
+        RegisterCandidateResponse response = adminService.registerCandidate(request);
+        assertCandidateIsRegistered(response);
 
+    }
+
+    private static void assertCandidateIsRegistered(RegisterCandidateResponse response) {
+        assertThat(response).isNotNull();
+        assertThat(response.getCandidateId()).isNotNull();
+        assertThat(response.getCategory()).isEqualTo(NATIONAL);
+        assertThat(response.getFirstName()).isEqualTo("Dayo");
+        assertThat(response.getLastName()).isEqualTo("Akinyemi");
+        assertThat(response.getPartyAffiliation()).isEqualTo(APC);
+        assertThat(response.getMessage()).contains("success");
+        assertThat(response.getSchedule()).isNotEqualTo(NOT_SCHEDULED);
+        assertThat(response.getSchedule()).isNotEqualTo(ENDED);
+        assertThat(response.getElectionTitle()).isEqualTo("National Election 1");
+    }
+
+    @Sql(scripts = "/db/data.sql")
+    @Test
+    public void registerCandidateForUnscheduledElection_ThrowsExceptionTest(){
 
     }
 

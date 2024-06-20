@@ -1,4 +1,7 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
-public class AdminService {
+import org.springframework.stereotype.Service;
+
+
+public interface AdminService {
 }

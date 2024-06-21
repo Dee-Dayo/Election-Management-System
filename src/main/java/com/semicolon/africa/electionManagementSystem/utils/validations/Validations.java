@@ -8,8 +8,11 @@ import com.semicolon.africa.electionManagementSystem.models.Candidate;
 public class Validations {
 
     public static void verifyEmailAddress(String email) {
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n";
-        if (!email.matches(emailRegex))throw new ElectionManagementSystemException("Invalid email address");
+        String emailRegex = "[a-z0-9!#$%&'+/=?^_`{|}~-]?+(?:\\.[a-z0-9!#$%&'+/=?^_`{|}~-]+)@(?:[a-z0-9](?:[a-z0-9-][a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+        String emailRegex2 = "([a-z]\\.)?[a-z]+@(semicolon|enum|learnspace|native.semicolon).africa";
+
+        if (!email.matches(emailRegex) || !email.matches(emailRegex2))throw new ElectionManagementSystemException("Invalid email address");
+
     }
     public static void validateCandidate(RegisterCandidateRequest request, Candidate candidate) {
         if (candidate.getPositionContested().equals(request.getPositionContested())

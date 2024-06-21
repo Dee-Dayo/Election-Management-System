@@ -28,7 +28,7 @@ public class VoteServiceImpl implements VoteService {
     public AddVoteResponse addVote(AddVoteRequest request) {
         Candidate candidate = candidateService.findCandidateBy(request.getCandidateId());
         Voter voter = voterService.findVoterBy(request.getVoterId());
-        Election election = adminService.findElectionBy(request.getElectionId());
+        Election election = adminService.getElection(request.getElectionId());
         Vote vote = new Vote();
         vote.setVoter(voter);
 //        vote.setCandidate(candidate);
@@ -41,7 +41,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public Long countElectionVote(Long electionId) {
-        return votes.countVote(electionId);
+        return 0L;
     }
 
     @Override

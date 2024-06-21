@@ -9,5 +9,6 @@ public interface VoteService {
     AddVoteResponse addVote(AddVoteRequest request);
     Long countElectionVote(Long voteId);
     Long countVoteForCandidate(CountCandidateVoteRequest request);
+
     ShowElectionResultResponse showResult(Long electionId);
 }

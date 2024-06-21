@@ -14,7 +14,7 @@ public class DataSourceConfig {
             HikariDataSource dataSource = new HikariDataSource();
             dataSource.setJdbcUrl("jdbc:postgresql://localhost/election_management_system");
             dataSource.setUsername("postgres");
-            dataSource.setPassword("SQLpassword");
+            dataSource.setPassword(" ");
             return dataSource;
     }
 }

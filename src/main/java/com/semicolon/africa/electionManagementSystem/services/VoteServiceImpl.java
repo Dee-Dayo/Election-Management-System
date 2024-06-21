@@ -1,38 +1,37 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.AddVoteRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.CountCandidateVoteRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.CountVoteForPartyRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.AddVoteResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterResponse;
 import com.semicolon.africa.electionManagementSystem.models.*;
-import com.semicolon.africa.electionManagementSystem.repositories.VoterRepository;
+import com.semicolon.africa.electionManagementSystem.repositories.VoteRepository;
+
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 @Service
 @AllArgsConstructor
 public class VoteServiceImpl implements VoteService {
-    private  CandidateService candidateService;
     private VoterService voterService;
     private AdminService adminService;
     private ModelMapper mapper;
-    private VoterRepository votes;
+    private VoteRepository votes;
     @Override
-    public AddVoteResponse addVote(AddVoteRequest request) {
-        Candidate candidate = candidateService.findCandidateBy(request.getCandidateId());
+
+    public AddVoteResponse addVote(AddVoteRequest request,@Autowired AdminService adminService,@Autowired VoterService voterService) {
         Voter voter = voterService.findVoterBy(request.getVoterId());
         Election election = adminService.getElection(request.getElectionId());
         Vote vote = new Vote();
         vote.setVoter(voter);
-//        vote.setCandidate(candidate);
+        vote.setAffiliation(request.getAffiliation());
         vote.setElection(election);
+        votes.save(vote);
         VoterResponse voterResponse = mapper.map(voter,VoterResponse.class);
         AddVoteResponse addVoteResponse =  mapper.map(vote,AddVoteResponse.class);
         addVoteResponse.setVoterResponse(voterResponse);
@@ -45,18 +44,14 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Long countVoteForCandidate(CountCandidateVoteRequest request) {
-        return votes.countVoteForCandidate(request.getElectionId(),candidateService.findCandidateBy(request.getCandidateId()).getCandidateId());
+    public Long countVoteForParties(CountVoteForPartyRequest request) {
+        return votes.countVoteByAffiliation(request.getElectionId(),request.getAffiliation());
     }
 
     @Override
     public ShowElectionResultResponse showResult(Long electionId) {
-        List<Candidate> candidates = adminService.getElectionCandidates(electionId);
-        Map<String, Long> results = new HashMap<>();
-        candidates.stream().forEach(candidate->{
-            results.put(candidate.getFirstName(),votes.countVoteForCandidate(electionId,candidate.getCandidateId()));
-        });
+       List<Vote> voteList = votes.findByElectionId(electionId);
 
-        return new ShowElectionResultResponse(electionId, results);
+        return null;
     }
 }

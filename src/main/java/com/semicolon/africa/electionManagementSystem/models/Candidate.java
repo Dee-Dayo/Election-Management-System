@@ -57,6 +57,7 @@ public class Candidate implements UserDetails {
     private void setTimeCreated() {
         timeCreated = now();
     }
+
     @PreUpdate
     private void setTimeUpdated() {
         timeUpdated = now();

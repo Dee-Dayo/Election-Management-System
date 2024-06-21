@@ -4,11 +4,12 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.AddVoteReques
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CountVoteForPartyRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.AddVoteResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.VoteNotFoundException;
 
 public interface VoteService {
     AddVoteResponse addVote(AddVoteRequest request, AdminService adminService, VoterService voterService);
-
-    Long countElectionVote(Long voteId);
+    Long countElectionVote(Long electionID);
     Long countVoteForParties(CountVoteForPartyRequest request);
-    ShowElectionResultResponse showResult(Long electionId);
+    ShowElectionResultResponse showResult(Long electionId) throws VoteNotFoundException;
+
 }

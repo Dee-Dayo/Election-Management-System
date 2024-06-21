@@ -3,6 +3,7 @@ package com.semicolon.africa.electionManagementSystem.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Voter;
 import com.semicolon.africa.electionManagementSystem.repositories.VoterRepository;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class VoterServiceImpl implements VoterService {
         registrationResponse = modelMapper.map(voter, VoterRegistrationResponse.class);
         registrationResponse.setMessage("Voter Registered Successfully");
         return registrationResponse;
+
     }
 
     @Override
@@ -38,6 +40,6 @@ public class VoterServiceImpl implements VoterService {
 
     @Override
     public Voter findVoterBy(Long voterId) {
-        return null;
+        return voterRepository.findById(voterId).orElseThrow(()-> new NoVoterFoundException("Can't Find This User"));
     }
 }

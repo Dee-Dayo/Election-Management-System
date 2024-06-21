@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
     private final UserDetailsServiceImpl service;
+
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> service.loadUserByUsername(username);

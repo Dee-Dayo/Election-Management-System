@@ -52,7 +52,6 @@ public class CandidateServiceTest {
         request.setPositionContested(STATE);
         candidateService.registerCandidateWith(request);
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
-        log.info("Number of candidates: {}", candidateService.getNumberOfCandidates());
 
         RegisterCandidateRequest request2 = new RegisterCandidateRequest();
         request2.setFirstName("Atiku");
@@ -65,7 +64,6 @@ public class CandidateServiceTest {
         request2.setPositionContested(STATE);
         assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
-        log.info("Number of candidates: {}", candidateService.getNumberOfCandidates());
     }
 
     @Test

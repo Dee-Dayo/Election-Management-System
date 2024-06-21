@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import javax.print.attribute.standard.Destination;
 
+import java.util.List;
+
 import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHEDULED;
 
 @Service
@@ -78,6 +80,16 @@ public class ElectionManagementService implements AdminService{
             throw new ElectionNotFoundException(String.format("No Scheduled Election with id: %d", electionId));
         }
         return election;
+    }
+
+    @Override
+    public Election findElectionBy(Long electionId) {
+        return null;
+    }
+
+    @Override
+    public List<Candidate> getElectionCandidates(Long electionId) {
+        return List.of();
     }
 
     private static ModelMapper configure(ModelMapper modelMapper) {

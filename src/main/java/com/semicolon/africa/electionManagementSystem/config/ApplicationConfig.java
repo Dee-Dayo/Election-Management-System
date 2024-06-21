@@ -18,10 +18,6 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService(){
         return username -> service.loadUserByUsername(username);
     }
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){

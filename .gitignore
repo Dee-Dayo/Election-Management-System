@@ -20,6 +20,8 @@ target/
 *.iws
 *.iml
 *.ipr
+*.properties
+
 
 ### NetBeans ###
 /nbproject/private/
@@ -38,3 +40,7 @@ build/
 .application.properties
 .secrets.properties
 /src/main/java/com/semicolon/africa/electionManagementSystem/config/DataSourceConfig.java
+
+
+application.properties
+secrets.properties

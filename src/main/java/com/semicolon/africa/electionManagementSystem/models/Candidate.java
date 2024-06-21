@@ -32,6 +32,7 @@ public class Candidate implements UserDetails {
     private String firstName;
     private String lastName;
     private String username;
+    private Role role;
     @Column(unique = true)
     private String email;
     private String password;
@@ -62,7 +63,7 @@ public class Candidate implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of();
     }
 
     @Override

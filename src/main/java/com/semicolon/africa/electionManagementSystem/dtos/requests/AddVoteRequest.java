@@ -1,12 +1,13 @@
 package com.semicolon.africa.electionManagementSystem.dtos.requests;
 
+import com.semicolon.africa.electionManagementSystem.models.PartyAffiliation;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 public class AddVoteRequest {
-    private Long candidateId;
+    private PartyAffiliation affiliation;
     private Long voterId;
     private Long ElectionId;
 }

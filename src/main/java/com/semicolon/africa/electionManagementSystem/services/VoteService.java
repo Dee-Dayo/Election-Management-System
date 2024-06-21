@@ -12,4 +12,5 @@ public interface VoteService {
     Long countVoteForParties(CountVoteForPartyRequest request);
     ShowElectionResultResponse showResult(Long electionId) throws VoteNotFoundException;
 
+
 }

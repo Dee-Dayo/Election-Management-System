@@ -15,5 +15,4 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     Long countVote(Long electionId);
     @Query("SELECT vo FROM Vote vo WHERE vo.election.electionId=:electionId ")
     List<Vote> findByElectionId(Long electionId);
-
 }

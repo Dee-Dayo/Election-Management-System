@@ -29,6 +29,7 @@ insert into votes(vote_id, affiliation,election_election_id) values
 (107,'APC',200),
 (108,'APC',200);
 
+
 insert into voters(voter_id, first_name, last_name, date_of_birth, state_of_origin, email, password, time_created)
 values
 (200, 'Rebecca', 'Nelson', '20-05-1999', 'Lagos', 'Darhyor2050@gmail.com', 'password', '2024-06-19T09:52:36.836436300'),

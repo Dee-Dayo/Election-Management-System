@@ -53,6 +53,7 @@ public class VoteServiceImplTest {
         assertThat(voteService.countVoteForParties(countVoteForPartyRequest)).isEqualTo(4);
     }
 
+
     @Test
     void showResult() throws VoteNotFoundException {
         assertThat(voteService.showResult(200L)).isNotNull();

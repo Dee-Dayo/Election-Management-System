@@ -35,4 +35,6 @@ build/
 
 ### VS Code ###
 .vscode/
-secrets.properties
+.application.properties
+.secrets.properties
+/src/main/java/com/semicolon/africa/electionManagementSystem/config/DataSourceConfig.java

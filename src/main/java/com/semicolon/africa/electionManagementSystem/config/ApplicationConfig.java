@@ -18,7 +18,6 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService(){
         return username -> service.loadUserByUsername(username);
     }
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

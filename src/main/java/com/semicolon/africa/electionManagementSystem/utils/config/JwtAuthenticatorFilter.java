@@ -1,7 +1,6 @@
-package com.semicolon.africa.electionManagementSystem.config;
+package com.semicolon.africa.electionManagementSystem.utils.config;
 
 import com.semicolon.africa.electionManagementSystem.services.JwtService;
-import com.semicolon.africa.electionManagementSystem.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,5 +1,8 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.semicolon.africa.electionManagementSystem.dtos.requests.SendMailRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.SendMailResponse;
+
 public interface MailService {
-    String sendMail(String email);
+    SendMailResponse sendMail(SendMailRequest sendMailRequest);
 }

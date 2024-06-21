@@ -1,4 +1,4 @@
-package com.semicolon.africa.electionManagementSystem.config;
+package com.semicolon.africa.electionManagementSystem.utils.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +22,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         security.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/voter/**").hasAnyAuthority("VOTER")
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/candidate/register").permitAll()
+                        .requestMatchers("/voter/register").permitAll()
+                        .requestMatchers("/admin/register").permitAll()
+                        .requestMatchers("/api/voter/**").hasAnyAuthority("VOTER")
+                        .requestMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/candidate/**").hasAnyAuthority("CANDIDATE")
                         .anyRequest().authenticated()).sessionManagement(manager-> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

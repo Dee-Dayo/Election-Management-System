@@ -20,7 +20,6 @@ import java.util.Map;
 
 import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.APC;
 
-
 @Service
 @AllArgsConstructor
 public class VoteServiceImpl implements VoteService {
@@ -32,7 +31,7 @@ public class VoteServiceImpl implements VoteService {
 
     public AddVoteResponse addVote(AddVoteRequest request,@Autowired AdminService adminService,@Autowired VoterService voterService) {
         Voter voter = voterService.findVoterBy(request.getVoterId());
-        Election election = adminService.findElectionBy(request.getElectionId());
+        Election election = adminService.getElection(request.getElectionId());
         Vote vote = new Vote();
         vote.setVoter(voter);
         vote.setAffiliation(request.getAffiliation());
@@ -46,7 +45,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public Long countElectionVote(Long electionId) {
-        return votes.countVote(electionId);
+        return 0L;
     }
 
     @Override

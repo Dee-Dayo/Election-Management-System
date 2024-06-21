@@ -1,6 +1,7 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 
+import com.semicolon.africa.electionManagementSystem.exceptions.UserNotFoundException;
 import com.semicolon.africa.electionManagementSystem.repositories.AdminRepository;
 import com.semicolon.africa.electionManagementSystem.repositories.VoterRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,11 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails userDetails = voters.findByEmail(username);
         if(userDetails == null)  userDetails = admins.findByEmail(username);
-        if(userDetails == null) throw new UsernameNotFoundException("User Not Found");
+        if(userDetails == null) try {
+            throw new UserNotFoundException("User Not Found");
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         return userDetails;
     }
 }

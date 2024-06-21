@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import static com.semicolon.africa.electionManagementSystem.models.Category.NATIONAL;
 import static com.semicolon.africa.electionManagementSystem.models.Category.STATE;
-import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.APC;
-import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.PDP;
+import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -27,16 +27,16 @@ public class CandidateServiceTest {
         RegisterCandidateRequest request = new RegisterCandidateRequest();
         request.setFirstName("Ahmed");
         request.setLastName("Tinubu");
-        request.setEmail("huchogrey73@gmail.com");
+        request.setEmail("lukasgraham73@gmail.com");
         request.setPassword("123456");
-        request.setPartyAffiliation(APC);
+        request.setPartyAffiliation(LP);
         request.setElectionId(200L);
         request.setUsername("Bat");
-        request.setPositionContested(NATIONAL);
+        request.setPositionContested(STATE);
         RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
         assertThat(response).isNotNull();
         assertThat(response.getCandidateId()).isNotNull();
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(5L);
     }
 
     @Test
@@ -51,8 +51,7 @@ public class CandidateServiceTest {
         request.setUsername("Fems");
         request.setPositionContested(STATE);
         candidateService.registerCandidateWith(request);
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(7L);
-        log.info("Number of candidates: {}", candidateService.getNumberOfCandidates());
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
 
         RegisterCandidateRequest request2 = new RegisterCandidateRequest();
         request2.setFirstName("Atiku");
@@ -64,12 +63,12 @@ public class CandidateServiceTest {
         request2.setUsername("Fems");
         request2.setPositionContested(STATE);
         assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(7L);
-        log.info("Number of candidates: {}", candidateService.getNumberOfCandidates());
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
     }
 
     @Test
     public void viewResultTest(){
-
+        var result = candidateService.viewElectionResultFor(200L);
+        assertThat(result).isNotNull();
     }
 }

@@ -22,4 +22,6 @@ public class Vote {
     private Voter voter;
     @ManyToOne
     private Election election;
+    @ManyToOne
+    private Candidate candidate;
 }

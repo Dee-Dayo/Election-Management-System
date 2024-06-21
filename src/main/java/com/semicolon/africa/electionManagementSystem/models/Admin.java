@@ -32,6 +32,7 @@ public class Admin implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
     @Setter(AccessLevel.NONE)
@@ -55,7 +56,7 @@ public class Admin implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of();
     }
 
     @Override

@@ -11,4 +11,6 @@ public interface CandidateService {
     Long getNumberOfCandidates();
 
     Candidate findCandidateBy(Long candidateId);
+
+    Object viewElectionResultFor(long l);
 }

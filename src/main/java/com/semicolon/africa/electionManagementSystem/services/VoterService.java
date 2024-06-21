@@ -14,4 +14,5 @@ public interface VoterService {
     List<Voter> getNumberOfVoters();
 
     Voter findVoterBy(Long voterId);
+
 }

@@ -38,6 +38,7 @@ public class VoterServiceImpl implements VoterService {
         return voterRepository.findAll();
     }
 
+
     @Override
     public Voter findVoterBy(Long voterId) {
         return voterRepository.findById(voterId).orElseThrow(()-> new NoVoterFoundException("Can't Find This User"));

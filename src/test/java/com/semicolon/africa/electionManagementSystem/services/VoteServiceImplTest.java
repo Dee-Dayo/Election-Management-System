@@ -60,4 +60,5 @@ public class VoteServiceImplTest {
         assertThat(voteService.showResult(200L).getResults().size()).isEqualTo(4);
         assertThat(voteService.showResult(200L).getResults().get(APC)).isEqualTo(4);
     }
+
 }

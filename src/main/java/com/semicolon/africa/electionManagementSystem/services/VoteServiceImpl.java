@@ -63,6 +63,5 @@ public class VoteServiceImpl implements VoteService {
             results.put(affiliation,votes.countVoteByAffiliation(electionId,affiliation));
         }
         return new ShowElectionResultResponse(electionId,results);
-
     }
 }

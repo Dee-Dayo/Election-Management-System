@@ -41,7 +41,6 @@ public class Candidate implements UserDetails {
     private Category positionContested;
     @Enumerated(value = STRING)
     private PartyAffiliation partyAffiliation;
-
     @ManyToOne
     @JoinColumn(name="election_id")
     private Election election;

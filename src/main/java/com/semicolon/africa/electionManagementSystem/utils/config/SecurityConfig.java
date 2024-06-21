@@ -1,4 +1,4 @@
-package com.semicolon.africa.electionManagementSystem.config;
+package com.semicolon.africa.electionManagementSystem.utils.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

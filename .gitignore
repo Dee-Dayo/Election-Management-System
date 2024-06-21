@@ -41,6 +41,3 @@ build/
 .secrets.properties
 /src/main/java/com/semicolon/africa/electionManagementSystem/config/DataSourceConfig.java
 
-
-application.properties
-secrets.properties

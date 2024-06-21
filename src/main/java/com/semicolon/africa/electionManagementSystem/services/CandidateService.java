@@ -4,6 +4,8 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandi
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 
+import java.util.List;
+
 public interface CandidateService {
 
     RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request);
@@ -13,4 +15,6 @@ public interface CandidateService {
     Candidate findCandidateBy(Long candidateId);
 
     Object viewElectionResultFor(long l);
+
+    List<Candidate> findAllElectionCandidates(Long electionId);
 }

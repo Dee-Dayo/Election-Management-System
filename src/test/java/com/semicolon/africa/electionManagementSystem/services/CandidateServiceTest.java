@@ -24,7 +24,7 @@ public class CandidateServiceTest {
     CandidateService candidateService;
 
     @Test
-    @Sql(scripts = "/db/data.sql")
+    @Sql(scripts = "/db/elections.sql")
     public void testRegisterCandidate_ListOfCandidatesIncreases() {
         RegisterCandidateRequest request = new RegisterCandidateRequest();
         request.setFirstName("Ahmed");
@@ -42,7 +42,7 @@ public class CandidateServiceTest {
     }
 
     @Test
-    @Sql(scripts = "/db/data.sql")
+    @Sql(scripts = "/db/elections.sql")
     public void testRegisterCandidateForSameCategoryAndSameParty_listRemainsTheSame(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
         request.setFirstName("Femi");
@@ -72,7 +72,7 @@ public class CandidateServiceTest {
     }
 
     @Test
-    @Sql(scripts = "/db/data.sql")
+    @Sql(scripts = "/db/elections.sql")
     public void viewResultTest(){
         var result = candidateService.viewElectionResultFor(200L);
         assertThat(result).isNotNull();

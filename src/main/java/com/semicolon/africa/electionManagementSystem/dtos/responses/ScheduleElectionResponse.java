@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class ScheduleElectionResponse {
     private Admin scheduler;
     private Long electionId;
+    private String electionTitle;
     private Category category;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

@@ -86,8 +86,8 @@ public class ElectionCandidateService implements CandidateService {
     }
 
     @Override
-    public List<Candidate> findElectionCandidates(Long electionId) {
-        Election election = electionService.findElectionBy(electionId);
+    public List<Candidate> findAllElectionCandidates(Long electionId) {
+        electionService.findElectionBy(electionId);
         return candidates.findByElectionId(electionId);
     }
 

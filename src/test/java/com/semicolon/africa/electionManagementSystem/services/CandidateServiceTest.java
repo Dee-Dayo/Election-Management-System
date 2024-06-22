@@ -1,20 +1,12 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.github.fge.jackson.jsonpointer.JsonPointer;
-import com.github.fge.jackson.jsonpointer.JsonPointerException;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchOperation;
-import com.github.fge.jsonpatch.ReplaceOperation;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.DeleteCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.DeleteCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
-import com.semicolon.africa.electionManagementSystem.models.Role;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static com.semicolon.africa.electionManagementSystem.models.Category.NATIONAL;
 import static com.semicolon.africa.electionManagementSystem.models.Category.STATE;
 import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.*;
 import static com.semicolon.africa.electionManagementSystem.models.Role.CANDIDATE;
@@ -121,7 +112,7 @@ public class CandidateServiceTest {
     @Test
     public void findAllCandidatesForAnElectionTest(){
         Long electionId = 200L;
-        List<Candidate> candidates = candidateService.findElectionCandidates(electionId);
+        List<Candidate> candidates = candidateService.findAllElectionCandidates(electionId);
         assertThat(candidates).isNotEmpty();
         assertThat(candidates).hasSize(3);
     }

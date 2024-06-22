@@ -10,6 +10,7 @@ import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManageme
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -30,7 +31,6 @@ public class ElectionCandidateService implements CandidateService {
 
     private VoteService voteService;
     private AdminService adminService;
-    private ElectionManagementService electionService;
 
     @Autowired
     public void setVoteService(@Lazy VoteService voteService){
@@ -40,15 +40,12 @@ public class ElectionCandidateService implements CandidateService {
     public void setAdminService(@Lazy AdminService adminService){
         this.adminService = adminService;
     }
-    @Autowired
-    public void setElectionService(@Lazy ElectionManagementService electionService){
-        this.electionService = electionService;
-    }
+
 
 
     @Override
     public RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request) {
-        Election election = electionService.findElectionBy(request.getElectionId());
+        Election election = adminService.findElectionBy(request.getElectionId());
         validateElectionScheduleAndCategory(election,request);
         verifyEmailAddress(request.getEmail());
         candidates.findAll().forEach(candidate -> validateCandidate(request, candidate));
@@ -90,7 +87,7 @@ public class ElectionCandidateService implements CandidateService {
 
     @Override
     public List<Candidate> findAllElectionCandidates(Long electionId) {
-        electionService.findElectionBy(electionId);
+        adminService.findElectionBy(electionId);
         return candidates.findByElectionId(electionId);
     }
 

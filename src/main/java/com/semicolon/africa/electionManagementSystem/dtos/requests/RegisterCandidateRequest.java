@@ -16,6 +16,7 @@ public class RegisterCandidateRequest {
     private String password;
     private Category positionContested;
     private Long electionId;
+    private Long adminId;
     private Role role;
     private PartyAffiliation partyAffiliation;
 

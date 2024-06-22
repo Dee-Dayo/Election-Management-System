@@ -1,12 +1,10 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CancelElectionRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdminRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.CancelElectionResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
 
@@ -26,4 +24,6 @@ public interface AdminService {
     List<Candidate> getElectionCandidates(Long electionId);
 
     CancelElectionResponse cancelElection(CancelElectionRequest request);
+
+    RegisterAdminResponse registerAdmin(RegisterAdminRequest request);
 }

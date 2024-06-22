@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CancelElectionRequest {
-    private Long adminId;
-    private Long ElectionId;
-    private String reason;
+public class RegisterAdminRequest {
+    private String firstName;
+    private String lastName;
+    private String email;
 }

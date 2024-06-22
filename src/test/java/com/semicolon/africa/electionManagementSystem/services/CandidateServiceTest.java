@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-public class CandidateServiceTest {
+public class  CandidateServiceTest {
     private static final Logger log = LoggerFactory.getLogger(CandidateServiceTest.class);
     @Autowired
     CandidateService candidateService;
@@ -37,7 +37,6 @@ public class CandidateServiceTest {
         request.setElectionId(200L);
         request.setAdminId(100L);
         request.setUsername("Bat");
-        request.setRole(CANDIDATE);
         request.setPositionContested(NATIONAL);
         RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
         assertThat(response).isNotNull();
@@ -55,7 +54,6 @@ public class CandidateServiceTest {
         request.setPartyAffiliation(PDP);
         request.setAdminId(100L);
         request.setElectionId(200L);
-        request.setRole(CANDIDATE);
         request.setUsername("Fems");
         request.setPositionContested(STATE);
         candidateService.registerCandidateWith(request);
@@ -67,7 +65,6 @@ public class CandidateServiceTest {
         request2.setEmail("jojofolani@gmail.com");
         request2.setPassword("123456");
         request2.setPartyAffiliation(PDP);
-        request.setRole(CANDIDATE);
         request2.setElectionId(200L);
         request.setAdminId(100L);
         request2.setUsername("Fems");
@@ -90,7 +87,6 @@ public class CandidateServiceTest {
         request.setEmail("lukasgrahamgmail.com");
         request.setPassword("123456");
         request.setPartyAffiliation(PDP);
-        request.setRole(CANDIDATE);
         request.setElectionId(200L);
         request.setAdminId(100L);
         request.setUsername("Bat");

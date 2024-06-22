@@ -6,11 +6,10 @@ import com.semicolon.africa.electionManagementSystem.dtos.responses.DeleteCandid
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.CandidateNotFoundException;
-import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
+import com.semicolon.africa.electionManagementSystem.models.Role;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHEDULED;
+import static com.semicolon.africa.electionManagementSystem.models.Role.CANDIDATE;
 import static com.semicolon.africa.electionManagementSystem.utils.validations.Validations.*;
 
 @Service
@@ -50,6 +49,7 @@ public class ElectionCandidateService implements CandidateService {
         verifyEmailAddress(request.getEmail());
         candidates.findAll().forEach(candidate -> validateCandidate(request, candidate));
         Candidate candidate = modelMapper.map(request, Candidate.class);
+        candidate.setRole(CANDIDATE);
         candidates.save(candidate);
         RegisterCandidateResponse response = modelMapper.map(candidate, RegisterCandidateResponse.class);
         response.setMessage("Candidate Successfully registered");

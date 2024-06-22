@@ -50,11 +50,8 @@ public class VoterServiceImpl implements VoterService {
 
     @Override
     public Voter findVoterBy(Long voterId) {
-<<<<<<< HEAD
         return null;
-=======
-        return voterRepository.findById(voterId).orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
->>>>>>> cad4f8322616e75bc37cc2effa6e8f5abe0671c5
+       //return voterRepository.findById(voterId).orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
     }
 
 //    @Override

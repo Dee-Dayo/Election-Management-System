@@ -1,13 +1,20 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.DeleteCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.DeleteCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.CandidateNotFoundException;
+import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
+import com.semicolon.africa.electionManagementSystem.models.Role;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,12 +72,15 @@ public class ElectionCandidateService implements CandidateService {
     @Override
     public Candidate findCandidateBy(Long candidateId) {
         return candidates.findById(candidateId).orElseThrow(() -> new CandidateNotFoundException("candidate not found"));
+
     }
 
     @Override
     public ShowElectionResultResponse viewElectionResultFor(long electionId) {
         return voteService.showResult(electionId);
     }
+
+
 
     @Override
     public DeleteCandidateResponse deleteCandidate(DeleteCandidateRequest request) {
@@ -85,6 +95,22 @@ public class ElectionCandidateService implements CandidateService {
     public List<Candidate> findAllElectionCandidates(Long electionId) {
         adminService.findElectionBy(electionId);
         return candidates.findByElectionId(electionId);
+    }
+
+    @Override
+    public UpdateCandidateResponse updateWith(Long candidateId, JsonPatch request) {
+        try{
+            Candidate candidate = findCandidateBy(candidateId);
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode candidateNode = objectMapper.convertValue(candidate, JsonNode.class);
+            candidateNode = request.apply(candidateNode);
+            candidate = objectMapper.convertValue(candidateNode, Candidate.class);
+            candidate = candidates.save(candidate);
+            return modelMapper.map(candidate, UpdateCandidateResponse.class);
+        } catch (JsonPatchException e) {
+            throw new ElectionManagementSystemException(e.getMessage());
+        }
+
     }
 
 

@@ -28,6 +28,7 @@ public class ApplicationConfig {
     private String mailServiceUrl;
 
     private final UserDetailsServiceImpl service;
+
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> service.loadUserByUsername(username);
@@ -43,6 +44,8 @@ public class ApplicationConfig {
         dao.setPasswordEncoder(passwordEncoder());
         return dao;
     }
+    @Bean
+    public ModelMapper modelMapper(){return new ModelMapper();}
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

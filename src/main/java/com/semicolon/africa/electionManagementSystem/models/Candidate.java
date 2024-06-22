@@ -1,6 +1,5 @@
 package com.semicolon.africa.electionManagementSystem.models;
 
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -57,6 +56,7 @@ public class Candidate implements UserDetails {
     private void setTimeCreated() {
         timeCreated = now();
     }
+
     @PreUpdate
     private void setTimeUpdated() {
         timeUpdated = now();

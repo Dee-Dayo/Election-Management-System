@@ -20,6 +20,8 @@ target/
 *.iws
 *.iml
 *.ipr
+*.properties
+
 
 ### NetBeans ###
 /nbproject/private/

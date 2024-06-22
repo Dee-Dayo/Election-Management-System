@@ -1,4 +1,5 @@
 truncate table elections cascade;
+truncate table admin cascade;
 truncate table candidates cascade;
 truncate table voters cascade;
 
@@ -6,6 +7,13 @@ truncate table voters cascade;
 insert into elections(election_id, title, start_date, end_date, category, time_created) values
     (200, 'Presidential Elections', '2024-07-19T09:00', '2024-07-19T01:00', 'NATIONAL',
      '2024-06-19T09:52:36.836436300');
+
+
+insert into admin (admin_id, email, first_name, last_name, password, role, time_created, time_updated) values
+    (1, 'admin@example.com', 'Admin', 'User', '$2a$10$DowJNTRMi8Wmdfi6r4RrHeqz9hE72lpeu2t0FZrI8j/xIftoJjFEi',
+     'ADMIN', NOW(), NOW());
+
+
 
 
 insert into candidates(candidate_id, first_name, last_name, username, email, password, position_contested,

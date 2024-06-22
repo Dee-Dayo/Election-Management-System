@@ -1,3 +1,4 @@
+
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.AddVoteRequest;
@@ -26,7 +27,7 @@ public class VoteServiceImpl implements VoteService {
 
     public AddVoteResponse addVote(AddVoteRequest request,@Autowired AdminService adminService,@Autowired VoterService voterService) {
         Voter voter = voterService.findVoterBy(request.getVoterId());
-        Election election = adminService.getElection(request.getElectionId());
+        Election election = adminService.findElectionBy(request.getElectionId());
         Vote vote = new Vote();
         vote.setVoter(voter);
         vote.setAffiliation(request.getAffiliation());

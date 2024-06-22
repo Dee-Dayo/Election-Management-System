@@ -1,3 +1,4 @@
+
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.AddVoteRequest;

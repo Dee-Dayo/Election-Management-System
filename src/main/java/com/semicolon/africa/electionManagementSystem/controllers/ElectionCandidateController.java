@@ -20,9 +20,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class ElectionCandidateController {
     private ElectionCandidateService electionCandidateService;
 
-
-    private final ElectionCandidateService electionCandidateService;
-
     @PostMapping("/register")
     public ResponseEntity<?> RegisterCandidateWith(@RequestBody RegisterCandidateRequest registerCandidateRequest){
         try{

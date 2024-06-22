@@ -15,15 +15,13 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@AllArgsConstructor
-@RequestMapping("candidate")
+@RequestMapping("/candidate")
 public class ElectionCandidateController {
-
-
-    private final ElectionCandidateService electionCandidateService;
+    @Autowired
+    private ElectionCandidateService electionCandidateService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> RegisterCandidateWith(@RequestBody RegisterCandidateRequest registerCandidateRequest){
+    public ResponseEntity<?> registerCandidateWith(@RequestBody RegisterCandidateRequest registerCandidateRequest){
         try{
             RegisterCandidateResponse response = electionCandidateService.registerCandidateWith(registerCandidateRequest);
             return ResponseEntity.status(CREATED).body(response);

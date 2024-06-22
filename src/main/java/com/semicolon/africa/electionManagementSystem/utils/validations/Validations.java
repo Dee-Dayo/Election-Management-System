@@ -11,7 +11,7 @@ import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHE
 public class Validations {
 
     public static void verifyEmailAddress(String email) {
-        String emailRegex = "[a-z0-9!#$%&'+/=?^_`{|}~-]?+(?:\\.[a-z0-9!#$%&'+/=?^_`{|}~-]+)@(?:[a-z0-9](?:[a-z0-9-][a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         String emailRegex2 = "([a-z]\\.)?[a-z]+@(semicolon|enum|learnspace|native.semicolon).africa";
 
         if (!email.matches(emailRegex) || !email.matches(emailRegex2))throw new ElectionManagementSystemException("Invalid email address");
@@ -23,6 +23,7 @@ public class Validations {
             throw new NoVoterFoundException("candidate under " + request.getPartyAffiliation() + " exists for " + request.getPositionContested());
         }
     }
+
     public static void validateElectionScheduleAndCategory(Election election, RegisterCandidateRequest request) {
         if (election == null) throw new ElectionManagementSystemException("Election not found");
         if(election.getSchedule()!= SCHEDULED)

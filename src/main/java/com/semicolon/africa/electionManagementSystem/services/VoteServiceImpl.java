@@ -1,4 +1,3 @@
-
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.AddVoteRequest;
@@ -6,6 +5,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.CountVoteForP
 import com.semicolon.africa.electionManagementSystem.dtos.responses.AddVoteResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterResponse;
+import com.semicolon.africa.electionManagementSystem.exceptions.VoteNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.*;
 import com.semicolon.africa.electionManagementSystem.repositories.VoteRepository;
 
@@ -14,7 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.APC;
 
 @Service
 @AllArgsConstructor
@@ -32,7 +36,7 @@ public class VoteServiceImpl implements VoteService {
         vote.setVoter(voter);
         vote.setAffiliation(request.getAffiliation());
         vote.setElection(election);
-        votes.save(vote);
+        vote = votes.save(vote);
         VoterResponse voterResponse = mapper.map(voter,VoterResponse.class);
         AddVoteResponse addVoteResponse =  mapper.map(vote,AddVoteResponse.class);
         addVoteResponse.setVoterResponse(voterResponse);
@@ -41,7 +45,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public Long countElectionVote(Long electionId) {
-        return 0L;
+        return votes.countVote(electionId);
     }
 
     @Override
@@ -50,9 +54,13 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public ShowElectionResultResponse showResult(Long electionId) {
+    public ShowElectionResultResponse showResult(Long electionId) throws VoteNotFoundException {
        List<Vote> voteList = votes.findByElectionId(electionId);
-
-        return null;
+        Map<PartyAffiliation,Long> results = new HashMap<> ();
+        if(voteList.isEmpty()) throw new VoteNotFoundException("NO VOTE FOUND");
+        for(PartyAffiliation affiliation: PartyAffiliation.values()){
+            results.put(affiliation,votes.countVoteByAffiliation(electionId,affiliation));
+        }
+        return new ShowElectionResultResponse(electionId,results);
     }
 }

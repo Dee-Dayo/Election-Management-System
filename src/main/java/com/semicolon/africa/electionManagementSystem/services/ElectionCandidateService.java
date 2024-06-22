@@ -75,6 +75,7 @@ public class ElectionCandidateService implements CandidateService {
     public ShowElectionResultResponse viewElectionResultFor(long electionId) {
         return voteService.showResult(electionId);
     }
+<<<<<<< Updated upstream
 
     @Override
     public DeleteCandidateResponse deleteCandidate(DeleteCandidateRequest request) {
@@ -92,4 +93,6 @@ public class ElectionCandidateService implements CandidateService {
     }
 
 
+=======
+>>>>>>> Stashed changes
 }

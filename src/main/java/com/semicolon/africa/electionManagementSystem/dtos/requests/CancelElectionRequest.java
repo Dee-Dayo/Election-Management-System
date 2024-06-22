@@ -1,8 +1,11 @@
 package com.semicolon.africa.electionManagementSystem.dtos.requests;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class CancelElectionRequest {
     private Long adminId;
     private Long ElectionId;

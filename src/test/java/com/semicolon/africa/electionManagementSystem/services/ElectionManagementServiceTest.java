@@ -30,7 +30,7 @@ class ElectionManagementServiceTest {
     private AdminService adminService;
 
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void scheduleElection_ElectionCanBeScheduledTest(){
         ScheduleElectionRequest request = new ScheduleElectionRequest();
@@ -43,7 +43,7 @@ class ElectionManagementServiceTest {
         assertThat(response.getSchedule()).isEqualTo(SCHEDULED);
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void checkElectionStatus_Test(){
 
@@ -53,7 +53,7 @@ class ElectionManagementServiceTest {
         assertThat(response.getSchedule()).isEqualTo(SCHEDULED);
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void registerCandidate_CandidateIsRegisteredTest(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
@@ -80,7 +80,7 @@ class ElectionManagementServiceTest {
         assertThat(response.getElectionTitle()).isEqualTo("National Election 1");
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void registerCandidateForUnscheduledElection_ThrowsExceptionTest(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
@@ -94,7 +94,7 @@ class ElectionManagementServiceTest {
         assertThrows(DeniedAccessException.class, ()-> adminService.registerCandidate(request));
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void cancelScheduledElection_electionIsCancelledTest(){
         CancelElectionRequest request = new CancelElectionRequest();

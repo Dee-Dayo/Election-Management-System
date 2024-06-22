@@ -1,12 +1,10 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CancelElectionRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdminRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.CancelElectionResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
 import com.semicolon.africa.electionManagementSystem.exceptions.DeniedAccessException;
 import com.semicolon.africa.electionManagementSystem.models.Category;
 import com.semicolon.africa.electionManagementSystem.models.Election;
@@ -32,7 +30,7 @@ class ElectionManagementServiceTest {
     private AdminService adminService;
 
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void scheduleElection_ElectionCanBeScheduledTest(){
         ScheduleElectionRequest request = new ScheduleElectionRequest();
@@ -45,7 +43,7 @@ class ElectionManagementServiceTest {
         assertThat(response.getSchedule()).isEqualTo(SCHEDULED);
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void checkElectionStatus_Test(){
 
@@ -55,7 +53,7 @@ class ElectionManagementServiceTest {
         assertThat(response.getSchedule()).isEqualTo(SCHEDULED);
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void registerCandidate_CandidateIsRegisteredTest(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
@@ -82,7 +80,7 @@ class ElectionManagementServiceTest {
         assertThat(response.getElectionTitle()).isEqualTo("National Election 1");
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void registerCandidateForUnscheduledElection_ThrowsExceptionTest(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
@@ -96,7 +94,7 @@ class ElectionManagementServiceTest {
         assertThrows(DeniedAccessException.class, ()-> adminService.registerCandidate(request));
     }
 
-    @Sql(scripts = "/db/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void cancelScheduledElection_electionIsCancelledTest(){
         CancelElectionRequest request = new CancelElectionRequest();
@@ -110,6 +108,19 @@ class ElectionManagementServiceTest {
         assertThat(response.getElection().getCategory()).isEqualTo(NATIONAL);
         assertThat(response.getElection().getSchedule()).isEqualTo(CANCELLED);
 
+    }
+
+    @Test
+    public  void registerAdmin_AdminIsRegisteredTest(){
+        RegisterAdminRequest request = new RegisterAdminRequest();
+        request.setFirstName("John");
+        request.setLastName("Doe");
+        request.setEmail("johnDoe@email.com");
+        RegisterAdminResponse response = adminService.registerAdmin(request);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getMesssage()).contains("success");
+        assertThat(response.getId()).isNotNull();
     }
 
 

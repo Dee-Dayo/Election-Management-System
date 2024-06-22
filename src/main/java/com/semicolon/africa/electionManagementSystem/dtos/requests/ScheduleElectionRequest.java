@@ -2,10 +2,13 @@ package com.semicolon.africa.electionManagementSystem.dtos.requests;
 
 import com.semicolon.africa.electionManagementSystem.models.Category;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 public class ScheduleElectionRequest {
     private String electionTitle;
     private LocalDateTime startDate;

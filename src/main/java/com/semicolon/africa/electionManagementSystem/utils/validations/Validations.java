@@ -4,6 +4,9 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandi
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
+import com.semicolon.africa.electionManagementSystem.models.Election;
+
+import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHEDULED;
 
 public class Validations {
 
@@ -19,6 +22,13 @@ public class Validations {
                 && candidate.getPartyAffiliation().equals(request.getPartyAffiliation())) {
             throw new NoVoterFoundException("candidate under " + request.getPartyAffiliation() + " exists for " + request.getPositionContested());
         }
+    }
+    public static void validateElectionScheduleAndCategory(Election election, RegisterCandidateRequest request) {
+        if (election == null) throw new ElectionManagementSystemException("Election not found");
+        if(election.getSchedule()!= SCHEDULED)
+            throw new ElectionManagementSystemException("Can not register candidate for this election");
+        if(election.getCategory() != request.getPositionContested())
+            throw new ElectionManagementSystemException("Change the intended candidate category to "+election.getCategory());
     }
 
 }

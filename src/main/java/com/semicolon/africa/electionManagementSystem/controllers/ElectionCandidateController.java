@@ -18,7 +18,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @AllArgsConstructor
 @RequestMapping("candidate")
 public class ElectionCandidateController {
-    @Autowired
     private ElectionCandidateService electionCandidateService;
 
 

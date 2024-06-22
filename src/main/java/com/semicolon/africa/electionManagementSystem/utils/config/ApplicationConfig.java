@@ -1,4 +1,4 @@
-package com.semicolon.africa.electionManagementSystem.config;
+package com.semicolon.africa.electionManagementSystem.utils.config;
 
 
 import com.semicolon.africa.electionManagementSystem.services.UserDetailsServiceImpl;
@@ -32,7 +32,6 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService(){
         return username -> service.loadUserByUsername(username);
     }
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

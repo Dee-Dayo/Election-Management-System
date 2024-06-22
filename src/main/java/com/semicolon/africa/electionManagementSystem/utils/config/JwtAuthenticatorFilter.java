@@ -1,4 +1,4 @@
-package com.semicolon.africa.electionManagementSystem.config;
+package com.semicolon.africa.electionManagementSystem.utils.config;
 
 import com.semicolon.africa.electionManagementSystem.services.JwtService;
 import jakarta.servlet.FilterChain;

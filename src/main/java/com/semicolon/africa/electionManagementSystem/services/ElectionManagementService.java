@@ -1,12 +1,10 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CancelElectionRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdminRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.CancelElectionResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
 import com.semicolon.africa.electionManagementSystem.exceptions.DeniedAccessException;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoCandidateRegisteredException;
@@ -14,17 +12,21 @@ import com.semicolon.africa.electionManagementSystem.exceptions.UserNotFoundExce
 import com.semicolon.africa.electionManagementSystem.models.Admin;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
+import com.semicolon.africa.electionManagementSystem.models.Role;
 import com.semicolon.africa.electionManagementSystem.repositories.AdminRepository;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import com.semicolon.africa.electionManagementSystem.repositories.ElectionRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.semicolon.africa.electionManagementSystem.models.Role.ADMIN;
 import static com.semicolon.africa.electionManagementSystem.models.Schedule.CANCELLED;
 import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHEDULED;
+import static com.semicolon.africa.electionManagementSystem.utils.validations.Validations.verifyEmailAddress;
 
 @Service
 //@AllArgsConstructor
@@ -34,6 +36,9 @@ public class ElectionManagementService implements AdminService{
     private final CandidateRepository candidateRepository;
     private final AdminRepository adminRepository;
     private final CandidateService candidateService;
+
+    @Autowired
+    private ModelMapper modelMapper;
     //TODO What this service can do
         //Register Admin
         //Login Admin
@@ -74,13 +79,6 @@ public class ElectionManagementService implements AdminService{
 
     @Override
     public RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request) {
-//        Election election = findElectionBy(request.getElectionId());
-//        if (election.getCategory() != request.getPositionContested())throw new DeniedAccessException("Candidate cannot contest in this election category");
-//        ModelMapper modelMapper = configure(new ModelMapper());
-//        Candidate candidate = modelMapper.map(request, Candidate.class);
-//        Candidate savedCandidate = candidateRepository.save(candidate);
-//        RegisterCandidateResponse response = modelMapper.map(savedCandidate, RegisterCandidateResponse.class);
-//        response.setMessage("Candidate registered successfully");
             RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
         return response;
     }
@@ -116,6 +114,15 @@ public class ElectionManagementService implements AdminService{
         response.setReason(request.getReason());
         response.setMessage("Election Cancelled Successfully");
         return response;
+    }
+
+    @Override
+    public RegisterAdminResponse registerAdmin(RegisterAdminRequest request) {
+        verifyEmailAddress(request.getEmail());
+        Admin admin = modelMapper.map(request, Admin.class);
+        admin = adminRepository.save(admin);
+        admin.setRole(ADMIN);
+        return modelMapper.map(admin, RegisterAdminResponse.class);
     }
 
     private static ModelMapper configure(ModelMapper modelMapper) {

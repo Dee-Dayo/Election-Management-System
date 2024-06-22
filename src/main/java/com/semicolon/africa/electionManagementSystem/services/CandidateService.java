@@ -24,4 +24,6 @@ public interface CandidateService {
     DeleteCandidateResponse deleteCandidate(DeleteCandidateRequest request);
 
     List<Candidate> findAllElectionCandidates(Long electionId);
+
+
 }

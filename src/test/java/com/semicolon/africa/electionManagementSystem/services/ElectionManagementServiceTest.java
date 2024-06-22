@@ -1,12 +1,10 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CancelElectionRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdminRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.CancelElectionResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ElectionScheduledResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
-import com.semicolon.africa.electionManagementSystem.dtos.responses.ScheduleElectionResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
 import com.semicolon.africa.electionManagementSystem.exceptions.DeniedAccessException;
 import com.semicolon.africa.electionManagementSystem.models.Category;
 import com.semicolon.africa.electionManagementSystem.models.Election;
@@ -110,6 +108,19 @@ class ElectionManagementServiceTest {
         assertThat(response.getElection().getCategory()).isEqualTo(NATIONAL);
         assertThat(response.getElection().getSchedule()).isEqualTo(CANCELLED);
 
+    }
+
+    @Test
+    public  void registerAdmin_AdminIsRegisteredTest(){
+        RegisterAdminRequest request = new RegisterAdminRequest();
+        request.setFirstName("John");
+        request.setLastName("Doe");
+        request.setEmail("johnDoe@email.com");
+        RegisterAdminResponse response = adminService.registerAdmin(request);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getMesssage()).contains("success");
+        assertThat(response.getId()).isNotNull();
     }
 
 

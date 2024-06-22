@@ -38,9 +38,9 @@ class ElectionCandidateControllerTest {
         public void testThatCandidateCanRegister() throws JsonProcessingException {
             try {
                 String requestBody = "{\"firstName\": \"jummy\", \"lastName\": \"jumoke\" ," +
-                        " \"email\": \"josephfeyishetan@gmail.com\", \"username\": \"jummyjhay\", \"password\": \"jummy1\"}" ;
+                        " \"email\": \"ajibolaphilip10@gmail.com\", \"username\": \"jummyjhay\", \"password\": \"jummy1\",\"role\": \"CANDIDATE\"}" ;
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/api/candidates/register")
+                mockMvc.perform(MockMvcRequestBuilders.post("/candidate/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                .content(requestBody))
                                .andExpect(status().isCreated())

@@ -16,6 +16,7 @@ public class Vote {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long voteId;
+    @Enumerated(EnumType.STRING)
     private PartyAffiliation affiliation;
     @OneToOne
     private Voter voter;

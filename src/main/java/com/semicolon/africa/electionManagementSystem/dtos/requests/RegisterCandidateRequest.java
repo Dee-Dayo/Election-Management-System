@@ -2,6 +2,7 @@ package com.semicolon.africa.electionManagementSystem.dtos.requests;
 
 import com.semicolon.africa.electionManagementSystem.models.Category;
 import com.semicolon.africa.electionManagementSystem.models.PartyAffiliation;
+import com.semicolon.africa.electionManagementSystem.models.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class RegisterCandidateRequest {
     private String password;
     private Category positionContested;
     private Long electionId;
+    private Long adminId;
     private PartyAffiliation partyAffiliation;
 
 }

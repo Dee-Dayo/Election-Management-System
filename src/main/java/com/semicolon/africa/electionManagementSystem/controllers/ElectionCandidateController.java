@@ -1,13 +1,10 @@
 package com.semicolon.africa.electionManagementSystem.controllers;
 
-import com.semicolon.africa.electionManagementSystem.ElectionManagementSystemApplication;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
-import com.semicolon.africa.electionManagementSystem.services.ElectionCandidateService;
+import com.semicolon.africa.electionManagementSystem.services.CandidateService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +15,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @AllArgsConstructor
 @RequestMapping("candidate")
 public class ElectionCandidateController {
-    private ElectionCandidateService electionCandidateService;
+    private CandidateService electionCandidateService;
 
     @PostMapping("/register")
     public ResponseEntity<?> RegisterCandidateWith(@RequestBody RegisterCandidateRequest registerCandidateRequest){

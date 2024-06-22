@@ -28,15 +28,15 @@ insert into candidates(candidate_id, first_name, last_name, username, email, pas
 (103, 'Patience', 'Goodluck', 'Pg', 'aramideotenaike@gmail.com', 'password', 'NATIONAL', 'YPP', 200,
  '2024-06-19T09:52:36.836436300');
 
--- insert into votes(vote_id, affiliation,election_election_id) values
--- (100,'PDP',200),
--- (101,'APC',200),
--- (102,'LP',200),
--- (104,'PDP',200),
--- (105,'APC',200),
--- (106,'LP',200),
--- (107,'APC',200),
--- (108,'APC',200);
+insert into votes(vote_id, affiliation,election_election_id) values
+(100,'PDP',200),
+(101,'APC',200),
+(102,'LP',200),
+(104,'PDP',200),
+(105,'APC',200),
+(106,'LP',200),
+(107,'APC',200),
+(108,'APC',200);
 
 
 insert into voters(voter_id, first_name, last_name, date_of_birth, state_of_origin, email, password, time_created)

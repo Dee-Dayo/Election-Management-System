@@ -61,6 +61,7 @@ public class VoteServiceImpl implements VoteService {
         for(PartyAffiliation affiliation: PartyAffiliation.values()){
             results.put(affiliation,votes.countVoteByAffiliation(electionId,affiliation));
         }
-        return new ShowElectionResultResponse(electionId,results);
+//        return new ShowElectionResultResponse(electionId, results);
+        return null;
     }
 }

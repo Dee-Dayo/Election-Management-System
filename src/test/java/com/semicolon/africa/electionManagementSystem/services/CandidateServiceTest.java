@@ -5,6 +5,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandi
 import com.semicolon.africa.electionManagementSystem.dtos.responses.DeleteCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
+import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import org.junit.jupiter.api.Test;
@@ -91,7 +92,7 @@ public class  CandidateServiceTest {
         request.setAdminId(100L);
         request.setUsername("Bat");
         request.setPositionContested(STATE);
-        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateWith(request));
+        assertThrows(ElectionNotFoundException.class, ()-> candidateService.registerCandidateWith(request));
     }
 
     @Test

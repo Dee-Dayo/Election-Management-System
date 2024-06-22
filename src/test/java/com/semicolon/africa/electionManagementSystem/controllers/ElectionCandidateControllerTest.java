@@ -41,11 +41,7 @@ class ElectionCandidateControllerTest {
                 String requestBody = "{\"firstName\": \"jummy\", \"lastName\": \"jumoke\" ," +
                         " \"email\": \"ajibolaphilip10@gmail.com\", \"username\": \"jummyjhay\", \"password\": \"jummy1\",\"role\": \"CANDIDATE\"}" ;
 
-<<<<<<< HEAD
-                mockMvc.perform(MockMvcRequestBuilders.post("/api/candidate/register")
-=======
                 mockMvc.perform(MockMvcRequestBuilders.post("/candidate/register")
->>>>>>> 23dcecdc50216c6ebb0e470ff6c0c26b6bbc4669
                                 .contentType(MediaType.APPLICATION_JSON)
                                .content(requestBody))
                                .andExpect(status().isCreated())
@@ -60,12 +56,8 @@ class ElectionCandidateControllerTest {
 
     @Test
     public void testThatElectionResultCanBeViewed() throws Exception {
-
-        ShowElectionResultResponse response = new ShowElectionResultResponse();
-        response.setElectionId(1L);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/candidate/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(response)))
+        mockMvc.perform(MockMvcRequestBuilders.get(" /candidate/200")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andDo(print());
     }

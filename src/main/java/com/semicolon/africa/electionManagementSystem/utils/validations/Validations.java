@@ -24,4 +24,12 @@ public class Validations {
         }
     }
 
+    public static void validateElectionScheduleAndCategory(Election election, RegisterCandidateRequest request) {
+        if (election == null) throw new ElectionManagementSystemException("Election not found");
+        if(election.getSchedule()!= SCHEDULED)
+            throw new ElectionManagementSystemException("Can not register candidate for this election");
+        if(election.getCategory() != request.getPositionContested())
+            throw new ElectionManagementSystemException("Change the intended candidate category to "+election.getCategory());
+    }
+
 }

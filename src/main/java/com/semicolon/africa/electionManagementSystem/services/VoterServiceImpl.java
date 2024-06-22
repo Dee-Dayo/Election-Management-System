@@ -52,7 +52,8 @@ public class VoterServiceImpl implements VoterService {
 
     @Override
     public Voter findVoterBy(Long voterId) {
-        return voterRepository.findVoterBy(voterId);
+        return null;
+//        return voterRepository.findVoterBy(voterId);
     }
 
     @Override

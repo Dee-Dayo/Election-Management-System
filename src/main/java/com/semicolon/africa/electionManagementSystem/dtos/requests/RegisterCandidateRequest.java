@@ -17,7 +17,6 @@ public class RegisterCandidateRequest {
     private Category positionContested;
     private Long electionId;
     private Long adminId;
-    private Role role;
     private PartyAffiliation partyAffiliation;
 
 }

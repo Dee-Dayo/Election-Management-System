@@ -12,9 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
-
+import static com.semicolon.africa.electionManagementSystem.models.Category.NATIONAL;
 import static com.semicolon.africa.electionManagementSystem.models.Category.STATE;
 import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.*;
 import static com.semicolon.africa.electionManagementSystem.models.Role.CANDIDATE;
@@ -36,9 +35,10 @@ public class CandidateServiceTest {
         request.setPassword("123456");
         request.setPartyAffiliation(LP);
         request.setElectionId(200L);
+        request.setAdminId(100L);
         request.setUsername("Bat");
         request.setRole(CANDIDATE);
-        request.setPositionContested(STATE);
+        request.setPositionContested(NATIONAL);
         RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
         assertThat(response).isNotNull();
         assertThat(response.getCandidateId()).isNotNull();
@@ -53,6 +53,7 @@ public class CandidateServiceTest {
         request.setEmail("femigba@gmail.com");
         request.setPassword("123456");
         request.setPartyAffiliation(PDP);
+        request.setAdminId(100L);
         request.setElectionId(200L);
         request.setRole(CANDIDATE);
         request.setUsername("Fems");
@@ -68,6 +69,7 @@ public class CandidateServiceTest {
         request2.setPartyAffiliation(PDP);
         request.setRole(CANDIDATE);
         request2.setElectionId(200L);
+        request.setAdminId(100L);
         request2.setUsername("Fems");
         request2.setPositionContested(STATE);
         assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
@@ -90,6 +92,7 @@ public class CandidateServiceTest {
         request.setPartyAffiliation(PDP);
         request.setRole(CANDIDATE);
         request.setElectionId(200L);
+        request.setAdminId(100L);
         request.setUsername("Bat");
         request.setPositionContested(STATE);
         assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateWith(request));
@@ -99,7 +102,7 @@ public class CandidateServiceTest {
     public void deleteCandidate_candidateIsRemovedFromElectionTest(){
         Long adminId = 100L;
         Long electionId = 200L;
-        Long candidateId = 102L;
+        Long candidateId = 101L;
         DeleteCandidateRequest request = new DeleteCandidateRequest();
         request.setElectionId(electionId);
         request.setCandidateId(candidateId);
@@ -113,7 +116,6 @@ public class CandidateServiceTest {
     public void findAllCandidatesForAnElectionTest(){
         Long electionId = 200L;
         List<Candidate> candidates = candidateService.findAllElectionCandidates(electionId);
-        assertThat(candidates).isNotEmpty();
         assertThat(candidates).hasSize(3);
     }
 

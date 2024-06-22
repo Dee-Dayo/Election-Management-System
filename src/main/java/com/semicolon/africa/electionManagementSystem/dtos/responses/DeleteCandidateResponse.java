@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class VoterRegistrationResponse {
-    private Long voterId;
+public class DeleteCandidateResponse {
     private String message;
 }

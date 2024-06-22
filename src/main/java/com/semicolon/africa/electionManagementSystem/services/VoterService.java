@@ -1,6 +1,9 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.github.fge.jsonpatch.JsonPatch;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.UpdateVoterRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
 import com.semicolon.africa.electionManagementSystem.models.Voter;
 import org.springframework.stereotype.Service;
@@ -15,4 +18,5 @@ public interface VoterService {
 
     Voter findVoterBy(Long voterId);
 
+    UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch);
 }

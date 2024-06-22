@@ -69,13 +69,15 @@ public class ElectionCandidateService implements CandidateService {
     @Override
     public Candidate findCandidateBy(Long candidateId) {
         return candidates.findById(candidateId).orElseThrow(() -> new CandidateNotFoundException("candidate not found"));
+
     }
 
     @Override
     public ShowElectionResultResponse viewElectionResultFor(long electionId) {
         return voteService.showResult(electionId);
     }
-<<<<<<< Updated upstream
+
+
 
     @Override
     public DeleteCandidateResponse deleteCandidate(DeleteCandidateRequest request) {
@@ -93,6 +95,4 @@ public class ElectionCandidateService implements CandidateService {
     }
 
 
-=======
->>>>>>> Stashed changes
 }

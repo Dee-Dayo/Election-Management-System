@@ -10,7 +10,6 @@ import java.util.List;
 public interface VoteRepository extends JpaRepository<Vote, Long> {
     @Query("SELECT COUNT(v) FROM Vote v WHERE v.election.electionId = :electionId AND v.affiliation = :affiliation")
     Long countVoteByAffiliation(Long electionId, PartyAffiliation affiliation);
-
     @Query("SELECT COUNT(v) FROM Vote v WHERE v.election.electionId =:electionId")
     Long countVote(Long electionId);
     @Query("SELECT vo FROM Vote vo WHERE vo.election.electionId=:electionId ")

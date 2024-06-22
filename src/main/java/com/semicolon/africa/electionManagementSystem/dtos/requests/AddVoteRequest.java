@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 public class AddVoteRequest {
     private PartyAffiliation affiliation;
+
     private Long voterId;
     private Long ElectionId;
 }

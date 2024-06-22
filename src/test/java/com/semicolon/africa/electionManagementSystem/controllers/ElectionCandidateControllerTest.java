@@ -2,6 +2,7 @@ package com.semicolon.africa.electionManagementSystem.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import com.semicolon.africa.electionManagementSystem.services.ElectionCandidateService;
 import org.junit.jupiter.api.Test;
@@ -27,12 +28,7 @@ class ElectionCandidateControllerTest {
 
         @Autowired
         private MockMvc mockMvc;
-        @Autowired
-        private ElectionCandidateService electionCandidateService;
-        @Autowired
-        private CandidateRepository candidateRepository;
-        @Autowired
-        private ObjectMapper objectMapper;
+
 
         @Test
         public void testThatCandidateCanRegister() throws JsonProcessingException {
@@ -40,7 +36,7 @@ class ElectionCandidateControllerTest {
                 String requestBody = "{\"firstName\": \"jummy\", \"lastName\": \"jumoke\" ," +
                         " \"email\": \"josephfeyishetan@gmail.com\", \"username\": \"jummyjhay\", \"password\": \"jummy1\"}" ;
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/api/candidates/register")
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/candidate/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                .content(requestBody))
                                .andExpect(status().isCreated())
@@ -51,6 +47,22 @@ class ElectionCandidateControllerTest {
 
 
         }
+
+
+    @Test
+    public void testThatElectionResultCanBeViewed() throws Exception {
+
+        ShowElectionResultResponse response = new ShowElectionResultResponse();
+        response.setElectionId(1L);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/candidate/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(response)))
+                .andExpect(status().is2xxSuccessful())
+                .andDo(print());
+    }
+
+
+
 
 
 

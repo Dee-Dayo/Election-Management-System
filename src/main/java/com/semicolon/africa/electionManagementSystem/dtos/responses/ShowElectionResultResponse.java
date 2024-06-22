@@ -12,4 +12,8 @@ import java.util.Map;
 public class ShowElectionResultResponse {
     private Long ElectionId;
     private Map<String, Long> results;
+
+    public ShowElectionResultResponse() {
+
+    }
 }

@@ -8,7 +8,6 @@ import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElection
 import com.semicolon.africa.electionManagementSystem.exceptions.CandidateNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
-import com.semicolon.africa.electionManagementSystem.models.Role;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

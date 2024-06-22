@@ -8,5 +8,4 @@ import lombok.Setter;
 public class AddVoteResponse {
     private Long voteId;
     private VoterResponse voterResponse;
-
 }

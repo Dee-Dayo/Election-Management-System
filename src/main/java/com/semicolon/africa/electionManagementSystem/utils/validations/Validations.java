@@ -22,7 +22,7 @@ public class Validations {
     public static void validateCandidate(RegisterCandidateRequest request, Candidate candidate) {
         if (candidate.getPositionContested().equals(request.getPositionContested())
                 && candidate.getPartyAffiliation().equals(request.getPartyAffiliation())) {
-            throw new NoVoterFoundException("candidate under " + request.getPartyAffiliation() + " exists for " + request.getPositionContested());
+            throw new ElectionManagementSystemException("candidate under " + request.getPartyAffiliation() + " exists for " + request.getPositionContested());
         }
     }
 

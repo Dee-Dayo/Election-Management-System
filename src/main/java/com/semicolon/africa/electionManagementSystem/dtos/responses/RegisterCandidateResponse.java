@@ -13,6 +13,7 @@ public class RegisterCandidateResponse {
     private String firstName;
     private String lastName;
     private PartyAffiliation partyAffiliation;
+    private Long electionId;
     private String electionTitle;
     private Category category;
     private Schedule schedule;

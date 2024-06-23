@@ -12,6 +12,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.responses.DeleteCandid
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
+import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.VoteNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
@@ -60,7 +61,7 @@ public class  CandidateServiceTest {
         request.setUsername("Fems");
         request.setElectionId(200L);
         request.setPositionContested(NATIONAL);
-        candidateService.registerCandidateWith(request);
+        candidateService.registerCandidateForElection(request);
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
 
         RegisterCandidateRequest request2 = new RegisterCandidateRequest();
@@ -72,7 +73,7 @@ public class  CandidateServiceTest {
         request2.setPartyAffiliation(PDP);
         request2.setUsername("Fems");
         request2.setPositionContested(NATIONAL);
-        assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
+        assertThrows(ElectionNotFoundException.class, ()-> candidateService.registerCandidateForElection(request2));
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
     }
 
@@ -83,7 +84,7 @@ public class  CandidateServiceTest {
     }
 
     @Test
-    public void registerCandidateWithInvalidEmail_throwsExceptionTest(){
+    public void registerCandidateForElectionInvalidEmail_throwsExceptionTest(){
         request.setFirstName("Ahmed");
         request.setLastName("Tinubu");
         request.setEmail("lukasgrahamgmail.com");
@@ -92,7 +93,7 @@ public class  CandidateServiceTest {
         request.setPartyAffiliation(PDP);
         request.setUsername("Bat");
         request.setPositionContested(STATE);
-        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateWith(request));
+        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateForElection(request));
     }
 
     @Test
@@ -105,7 +106,7 @@ public class  CandidateServiceTest {
         request.setUsername("Bat");
         request.setElectionId(200L);
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(request);
+        RegisterCandidateResponse response1 = candidateService.registerCandidateForElection(request);
         assertThat(response1.getCandidateId()).isNotNull();
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
         DeleteCandidateRequest request1 = new DeleteCandidateRequest();
@@ -127,7 +128,7 @@ public class  CandidateServiceTest {
         request.setUsername("Bat");
         request.setElectionId(200L);
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(request);
+        RegisterCandidateResponse response1 = candidateService.registerCandidateForElection(request);
         assertThat(response1).isNotNull();
         assertThat(response1.getCandidateId()).isNotNull();
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
@@ -143,7 +144,7 @@ public class  CandidateServiceTest {
         request.setElectionId(200L);
         request.setUsername("Bat");
         request.setPositionContested(NATIONAL);
-        candidateService.registerCandidateWith(request);
+        candidateService.registerCandidateForElection(request);
         List<Candidate> candidates = candidateService.findAllElectionCandidates(200L);
         System.out.println(candidates);
         assertThat(candidates).hasSize(1);
@@ -159,7 +160,7 @@ public class  CandidateServiceTest {
         request.setElectionId(200L);
         request.setUsername("Bat");
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(request);
+        RegisterCandidateResponse response1 = candidateService.registerCandidateForElection(request);
         String firstName = candidateService.findCandidateBy(response1.getCandidateId()).getFirstName();
         assertThat(firstName).isNotEqualTo("new name");
         List<JsonPatchOperation> operations = List.of(new ReplaceOperation(new JsonPointer("/firstName"), new TextNode("new name")));
@@ -168,6 +169,21 @@ public class  CandidateServiceTest {
         assertThat(response).isNotNull();
         firstName = candidateService.findCandidateBy(response1.getCandidateId()).getFirstName();
         assertThat(firstName).isEqualTo("new name");
+    }
+
+    @Test
+    public void findCandidateByEmailTest(){
+        request.setFirstName("Ahmed");
+        request.setLastName("Tinubu");
+        request.setEmail("victormsonter@gmail.com");
+        request.setPassword("123456");
+        request.setPartyAffiliation(LP);
+        request.setElectionId(200L);
+        request.setUsername("Bat");
+        request.setPositionContested(NATIONAL);
+        RegisterCandidateResponse response1 = candidateService.registerCandidateForElection(request);
+        Candidate candidate = candidateService.finByEmail(request.getEmail());
+        assertThat(candidate).isNotNull();
     }
 
 

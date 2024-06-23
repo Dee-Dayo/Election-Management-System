@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public interface CandidateService {
 
-    RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request);
+    RegisterCandidateResponse registerCandidateForElection(RegisterCandidateRequest request);
 
     Long getNumberOfCandidates();
 
@@ -28,4 +28,6 @@ public interface CandidateService {
     List<Candidate> findAllElectionCandidates(Long electionId);
 
     UpdateCandidateResponse updateWith(Long candidateId, JsonPatch request);
+
+    Candidate finByEmail(String email);
 }

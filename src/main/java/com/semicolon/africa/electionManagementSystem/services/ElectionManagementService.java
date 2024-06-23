@@ -5,18 +5,15 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdmin
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
-import com.semicolon.africa.electionManagementSystem.exceptions.DeniedAccessException;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoCandidateRegisteredException;
 import com.semicolon.africa.electionManagementSystem.exceptions.UserNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Admin;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
-import com.semicolon.africa.electionManagementSystem.models.Role;
 import com.semicolon.africa.electionManagementSystem.repositories.AdminRepository;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import com.semicolon.africa.electionManagementSystem.repositories.ElectionRepository;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,7 +76,7 @@ public class ElectionManagementService implements AdminService{
 
     @Override
     public RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request) {
-        return candidateService.registerCandidateWith(request);
+        return candidateService.registerCandidateForElection(request);
     }
 
     @Override

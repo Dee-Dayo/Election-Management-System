@@ -9,4 +9,6 @@ import java.util.List;
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     @Query("SELECT c FROM Candidate c WHERE c.election.electionId=:electionId ")
     List<Candidate> findByElection(Long electionId);
+
+    Candidate findByEmail(String email);
 }

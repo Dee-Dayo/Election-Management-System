@@ -48,17 +48,19 @@ public class ElectionCandidateService implements CandidateService {
 
 
     @Override
-    public RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request) {
-        ModelMapper modelMapper = configure(new ModelMapper());
+    public RegisterCandidateResponse registerCandidateForElection(RegisterCandidateRequest request) {
+        ModelMapper mapper = configure(new ModelMapper());
         Election election = adminService.findElectionBy(request.getElectionId());
         validateElectionScheduleAndCategory(election,request);
         verifyEmailAddress(request.getEmail());
         candidates.findAll().forEach(candidate -> validateCandidate(request, candidate));
         Candidate candidate = modelMapper.map(request, Candidate.class);
+        candidate.setCandidateId(null);
         candidate.setRole(CANDIDATE);
         candidate.setElection(election);
         candidates.save(candidate);
-        RegisterCandidateResponse response = modelMapper.map(candidate, RegisterCandidateResponse.class);
+
+        RegisterCandidateResponse response = mapper.map(candidate, RegisterCandidateResponse.class);
         response.setMessage("Candidate registered successfully");
         return response;
     }
@@ -112,6 +114,11 @@ public class ElectionCandidateService implements CandidateService {
             throw new ElectionManagementSystemException(e.getMessage());
         }
 
+    }
+
+    @Override
+    public Candidate finByEmail(String email) {
+        return candidates.findByEmail(email);
     }
 
 

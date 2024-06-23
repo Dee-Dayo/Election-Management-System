@@ -1,5 +1,6 @@
 package com.semicolon.africa.electionManagementSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -23,6 +24,7 @@ import static java.time.LocalDateTime.now;
 @Setter
 @Table(name = "voters")
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Voter implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

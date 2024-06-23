@@ -1,7 +1,12 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.UpdateVoterRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.models.Role;
@@ -30,7 +35,7 @@ public class VoterServiceImpl implements VoterService {
 
         Voter voter = new Voter();
         Voter registeredVoter = voterRepository.findByEmail(registrationRequest.getEmail());
-        if (registeredVoter != null) throw new ElectionManagementSystemException(voter.getEmail() + " already exist");
+        if (registeredVoter != null) throw new ElectionManagementSystemException(registeredVoter.getEmail() + " already exist");
         voter = modelMapper.map(registrationRequest, Voter.class);
         voter.setRole(Role.VOTER);
         voter = voterRepository.save(voter);
@@ -50,34 +55,36 @@ public class VoterServiceImpl implements VoterService {
         return voterRepository.findById(voterId).orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
     }
 
-//    @Override
-//    public VoterRegistrationResponse updateVoterBioData(UpdateVoterRequest updateRequest) {
-//        Voter registeredVoter = voterRepository.findById(updateRequest.getVoterId()).
-//                orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
-//        registeredVoter = modelMapper.map(updateRequest, Voter.class);
-//        registeredVoter.setRole(Role.VOTER);
-//        registeredVoter = voterRepository.save(registeredVoter);
-//
-//        VoterRegistrationResponse response = modelMapper.map(registeredVoter, VoterRegistrationResponse.class);
-//        response.setMessage("Voter Updated Successfully");
-//        return response;
-//    }
 
 
-//    @Override
-//    public UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch) {
-//        try {
-//            Voter registeredVoter = findVoterBy(voterId);
-//            ObjectMapper mapper = new ObjectMapper();
-//            JsonNode node = mapper.convertValue(registeredVoter, JsonNode.class);
-//            node = jsonPatch.apply(node);
-//            registeredVoter = mapper.convertValue(node, Voter.class);
-//            registeredVoter = voterRepository.save(registeredVoter);
-//            return modelMapper.map(registeredVoter, UpdateVoterResponse.class);
-//        } catch (JsonPatchException e) {
-//            throw new ElectionManagementSystemException("Incorrect Voter Id");
-//        }
-//    }
+    @Override
+    public UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest) {
+        Voter registeredVoter = voterRepository.findById(updateRequest.getVoterId()).
+                orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
+        registeredVoter = modelMapper.map(updateRequest, Voter.class);
+        registeredVoter.setRole(Role.VOTER);
+        registeredVoter = voterRepository.save(registeredVoter);
+
+        UpdateVoterResponse response = modelMapper.map(registeredVoter, UpdateVoterResponse.class);
+        response.setMessage("Voter Updated Successfully");
+        return response;
+    }
+
+
+    @Override
+    public UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch) {
+        try {
+            Voter registeredVoter = findVoterBy(voterId);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = mapper.convertValue(registeredVoter, JsonNode.class);
+            node = jsonPatch.apply(node);
+            registeredVoter = mapper.convertValue(node, Voter.class);
+            registeredVoter = voterRepository.save(registeredVoter);
+            return modelMapper.map(registeredVoter, UpdateVoterResponse.class);
+        } catch (JsonPatchException e) {
+            throw new ElectionManagementSystemException("Incorrect Voter Id");
+        }
+    }
 
 
 }

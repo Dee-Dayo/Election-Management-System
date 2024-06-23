@@ -18,7 +18,13 @@ public interface VoterService {
 
     Voter findVoterBy(Long voterId);
 
+    UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest);
+
+
 //    VoterRegistrationResponse updateVoterBioData(UpdateVoterRequest updateRequest);
 
-//    UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch);
+
+//    VoterRegistrationResponse updateVoterBioData(UpdateVoterRequest updateRequest);
+
+    UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch);
 }

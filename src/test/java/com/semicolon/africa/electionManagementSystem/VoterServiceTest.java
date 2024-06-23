@@ -1,7 +1,14 @@
 package com.semicolon.africa.electionManagementSystem;
 
+import com.fasterxml.jackson.core.JsonPointer;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.ReplaceOperation;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.UpdateVoterRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.services.VoterService;
@@ -9,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,7 +57,7 @@ public class VoterServiceTest {
     }
 
     @Test
-    public void registerVoter_throwsExceptionTest() {
+    public void registerIneligibleVoter_throwsExceptionTest() {
         VoterRegistrationRequest registrationRequest = new VoterRegistrationRequest();
         registrationRequest.setFirstName("Grey");
         registrationRequest.setLastName("Doe");
@@ -60,18 +68,18 @@ public class VoterServiceTest {
         assertThrows(ElectionManagementSystemException.class, ()-> voterService.registerVoter(registrationRequest));
 
     }
-//    @Test
-//    public void updateVoterBioTest() throws JsonPointerException {
-//        String lastName = voterService.findVoterBy(200L).getLastName();
-//        assertThat(lastName).isNotEqualTo("Samson");
-//        List<JsonPatchOperation> operationList = List.of(new ReplaceOperation(new JsonPointer("/lastName"), new TextNode("Samson")));
-//        JsonPatch updated = new JsonPatch(operationList);
-//        UpdateVoterResponse updateResponse = voterService.updateVoterDetails(200L, updated);
-//        assertThat(updateResponse).isNotNull();
-//        lastName = voterService.findVoterBy(200L).getLastName();
-//        assertThat(lastName).isNotEqualTo("Samson");
-//
-//    }
+    @Test
+    public void updateVoterBioTest() throws JsonPointerException {
+        String lastName = voterService.findVoterBy(200L).getLastName();
+        assertThat(lastName).isNotEqualTo("Samson");
+        List<JsonPatchOperation> operationList = List.of(new ReplaceOperation(new JsonPointer("/lastName"), new TextNode("Samson")));
+        JsonPatch updated = new JsonPatch(operationList);
+        UpdateVoterResponse updateResponse = voterService.updateVoterDetails(200L, updated);
+        assertThat(updateResponse).isNotNull();
+        lastName = voterService.findVoterBy(200L).getLastName();
+        assertThat(lastName).isNotEqualTo("Samson");
+
+    }
 
 //    @Test
 //    public void updateVoterBioDataTest() {
@@ -90,7 +98,7 @@ public class VoterServiceTest {
 //        updateRequest.setFirstName(registrationRequest.getFirstName());
 //        updateRequest.setLastName("Sams");
 //        updateRequest.setPassword(registrationRequest.getPassword());
-//        VoterRegistrationResponse newResponse = voterService.updateVoterBioData(updateRequest);
+//        UpdateVoterResponse newResponse = voterService.updateVoterBioData(updateRequest);
 //        assertEquals(5, voterService.getNumberOfVoters().size());
 //
 //    }

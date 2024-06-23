@@ -5,6 +5,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdmin
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
+import com.semicolon.africa.electionManagementSystem.models.Admin;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
 
@@ -16,7 +17,6 @@ public interface AdminService {
 
     ElectionScheduledResponse getElectionSchedule(Long electionId);
 
-    RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request);
 
     Election findElectionBy(Long electionId);
 
@@ -26,4 +26,6 @@ public interface AdminService {
     CancelElectionResponse cancelElection(CancelElectionRequest request);
 
     RegisterAdminResponse registerAdmin(RegisterAdminRequest request);
+
+    Admin getAdmin(Long adminId);
 }

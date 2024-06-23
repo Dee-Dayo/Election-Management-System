@@ -4,10 +4,13 @@ import com.semicolon.africa.electionManagementSystem.models.Admin;
 import com.semicolon.africa.electionManagementSystem.models.Category;
 import com.semicolon.africa.electionManagementSystem.models.Schedule;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 public class ScheduleElectionResponse {
     private Admin scheduler;
     private Long electionId;
@@ -17,5 +20,6 @@ public class ScheduleElectionResponse {
     private LocalDateTime endDate;
     private LocalDateTime timeCreated;
     private Schedule schedule;
+    private String message;
 
 }

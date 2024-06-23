@@ -24,7 +24,8 @@ public class Election {
     @GeneratedValue(strategy = IDENTITY)
     private Long electionId;
     private String title;
-
+    private Long adminScheduler;
+    private Long adminCanceller;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

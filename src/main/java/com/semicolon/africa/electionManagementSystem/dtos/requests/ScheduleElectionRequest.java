@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ScheduleElectionRequest {
+    private Long adminId;
     private String electionTitle;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

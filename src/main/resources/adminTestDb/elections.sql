@@ -1,22 +1,22 @@
 -- ALTER TABLE elections
 -- ALTER COLUMN category TYPE VARCHAR;
--- ALTER COLUMN schedule TYPE INTEGER;
+-- ALTER COLUMN schedule TYPE SMALLINT;
 
 
 TRUNCATE TABLE elections CASCADE;
 TRUNCATE TABLE admin CASCADE;
 
 INSERT INTO elections (election_id, title, start_date, end_date, category, schedule, time_created, time_updated) VALUES
-(11, 'National Election 1', '2024-07-01 08:00:00', '2024-07-01 18:00:00', 'NATIONAL', 0, now(), now()),
-(12, 'State Election 1', '2024-07-02 08:00:00', '2024-07-02 18:00:00', 'STATE', 1, now(), now()),
-(13, 'LGA Election 1', '2024-07-03 08:00:00', '2024-07-03 18:00:00', 'LGA', 2, now(), now()),
-(14, 'Ward Election 1', '2024-07-04 08:00:00', '2024-07-04 18:00:00', 'WARD', 3, now(), now()),
-(15, 'National Election 2', '2024-08-01 08:00:00', '2024-08-01 18:00:00', 'NATIONAL', 0, now(), now()),
-(16, 'State Election 2', '2024-08-02 08:00:00', '2024-08-02 18:00:00', 'STATE', 1, now(), now()),
-(17, 'LGA Election 2', '2024-08-03 08:00:00', '2024-08-03 18:00:00', 'LGA', 2, now(), now()),
-(18, 'Ward Election 2', '2024-08-04 08:00:00', '2024-08-04 18:00:00', 'WARD', 3, now(), now()),
-(19, 'National Election 3', '2024-09-01 08:00:00', '2024-09-01 18:00:00', 'NATIONAL', 0, now(), now()),
-(20, 'State Election 3', '2024-09-02 08:00:00', '2024-09-02 18:00:00', 'STATE', 1, now(), now());
+(11, 'National Election 1', '2024-07-01 08:00:00', '2024-07-01 18:00:00', 'NATIONAL', 'SCHEDULED', now(), now()),
+(12, 'State Election 1', '2024-07-02 08:00:00', '2024-07-02 18:00:00', 'STATE', 'SCHEDULED', now(), now()),
+(13, 'LGA Election 1', '2024-07-03 08:00:00', '2024-07-03 18:00:00', 'LGA', 'SCHEDULED', now(), now()),
+(14, 'Ward Election 1', '2024-07-04 08:00:00', '2024-07-04 18:00:00', 'WARD', 'SCHEDULED', now(), now()),
+(15, 'National Election 2', '2024-08-01 08:00:00', '2024-08-01 18:00:00', 'NATIONAL', 'SCHEDULED', now(), now()),
+(16, 'State Election 2', '2024-08-02 08:00:00', '2024-08-02 18:00:00', 'STATE', 'SCHEDULED', now(), now()),
+(17, 'LGA Election 2', '2024-08-03 08:00:00', '2024-08-03 18:00:00', 'LGA', 'SCHEDULED', now(), now()),
+(18, 'Ward Election 2', '2024-08-04 08:00:00', '2024-08-04 18:00:00', 'WARD', 'SCHEDULED', now(), now()),
+(19, 'National Election 3', '2024-09-01 08:00:00', '2024-09-01 18:00:00', 'NATIONAL', 'SCHEDULED', now(), now()),
+(20, 'State Election 3', '2024-09-02 08:00:00', '2024-09-02 18:00:00', 'STATE', 'SCHEDULED', now(), now());
 
 
 INSERT INTO admin (admin_id, first_name, last_name, email, time_created) VALUES

@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.semicolon.africa.electionManagementSystem.models.PartyAffiliation.APC;
 
 @Service
 @AllArgsConstructor
@@ -61,6 +60,7 @@ public class VoteServiceImpl implements VoteService {
         for(PartyAffiliation affiliation: PartyAffiliation.values()){
             results.put(affiliation,votes.countVoteByAffiliation(electionId,affiliation));
         }
-        return new ShowElectionResultResponse(electionId,results);
+//        return new ShowElectionResultResponse(electionId, results);
+        return null;
     }
 }

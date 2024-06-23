@@ -36,6 +36,7 @@ public class Election {
     private LocalDateTime endDate;
     @Enumerated(value = STRING)
     private Category category;
+    @Enumerated(value = STRING)
     private Schedule schedule;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)

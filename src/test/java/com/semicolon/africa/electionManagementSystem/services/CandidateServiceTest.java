@@ -12,6 +12,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.responses.DeleteCandid
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
+import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.VoteNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;

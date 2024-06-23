@@ -18,9 +18,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @AllArgsConstructor
 @RequestMapping("candidate")
 public class ElectionCandidateController {
-
-
-    private final ElectionCandidateService electionCandidateService;
+    private ElectionCandidateService electionCandidateService;
 
     @PostMapping("/register")
     public ResponseEntity<?> RegisterCandidateWith(@RequestBody RegisterCandidateRequest registerCandidateRequest){

@@ -33,6 +33,7 @@ public class Voter implements UserDetails {
     private String lastName;
     private String dateOfBirth;
     private String stateOfOrigin;
+    @Enumerated(EnumType.STRING)
     private Role role;
     @Column(unique = true)
     private String email;

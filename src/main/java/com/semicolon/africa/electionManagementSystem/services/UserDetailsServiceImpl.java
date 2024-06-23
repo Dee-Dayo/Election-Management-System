@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl  implements UserDetailsService {
     private final VoterRepository voters;
     private final AdminRepository admins;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails userDetails = voters.findByEmail(username);

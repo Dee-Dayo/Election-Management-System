@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface VoterRepository extends JpaRepository<Voter, Long> {
     Voter findByEmail(String username);
 
+//    Voter findVoterBy(Long voterId);
 }

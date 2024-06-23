@@ -15,13 +15,13 @@ import java.util.List;
 @Service
 public interface CandidateService {
 
-    RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request);
+    RegisterCandidateResponse registerCandidateWith(Long electionId, RegisterCandidateRequest request);
 
     Long getNumberOfCandidates();
 
     Candidate findCandidateBy(Long candidateId);
 
-    ShowElectionResultResponse viewElectionResultFor(long l);
+    ShowElectionResultResponse viewElectionResultFor(long electionId);
 
     DeleteCandidateResponse deleteCandidate(DeleteCandidateRequest request);
 

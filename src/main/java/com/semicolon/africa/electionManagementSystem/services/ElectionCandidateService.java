@@ -14,7 +14,6 @@ import com.semicolon.africa.electionManagementSystem.exceptions.CandidateNotFoun
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
-import com.semicolon.africa.electionManagementSystem.models.Role;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +48,14 @@ public class ElectionCandidateService implements CandidateService {
 
 
     @Override
-    public RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request) {
-        Election election = adminService.findElectionBy(request.getElectionId());
+    public RegisterCandidateResponse registerCandidateWith(Long electionId,RegisterCandidateRequest request) {
+        Election election = adminService.findElectionBy(electionId);
         validateElectionScheduleAndCategory(election,request);
         verifyEmailAddress(request.getEmail());
         candidates.findAll().forEach(candidate -> validateCandidate(request, candidate));
         Candidate candidate = modelMapper.map(request, Candidate.class);
         candidate.setRole(CANDIDATE);
+        candidate.setElection(election);
         candidates.save(candidate);
         RegisterCandidateResponse response = modelMapper.map(candidate, RegisterCandidateResponse.class);
         response.setMessage("Candidate Successfully registered");
@@ -94,7 +94,7 @@ public class ElectionCandidateService implements CandidateService {
     @Override
     public List<Candidate> findAllElectionCandidates(Long electionId) {
         adminService.findElectionBy(electionId);
-        return candidates.findByElectionId(electionId);
+        return candidates.findByElection(electionId);
     }
 
     @Override

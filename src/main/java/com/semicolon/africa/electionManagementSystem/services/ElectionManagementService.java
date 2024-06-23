@@ -78,8 +78,8 @@ public class ElectionManagementService implements AdminService{
     }
 
     @Override
-    public RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request) {
-            RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
+    public RegisterCandidateResponse registerCandidate(Long electionId, RegisterCandidateRequest request) {
+            RegisterCandidateResponse response = candidateService.registerCandidateWith(electionId, request);
         return response;
     }
 

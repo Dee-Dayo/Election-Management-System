@@ -57,12 +57,11 @@ class ElectionManagementServiceTest {
     @Test
     public void registerCandidate_CandidateIsRegisteredTest(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
-        request.setElectionId(11L);
         request.setFirstName("Dayo");
         request.setLastName("Akinyemi");
         request.setPartyAffiliation(APC);
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response = adminService.registerCandidate(request);
+        RegisterCandidateResponse response = adminService.registerCandidate(11L,request);
         assertCandidateIsRegistered(response);
 
     }
@@ -84,14 +83,13 @@ class ElectionManagementServiceTest {
     @Test
     public void registerCandidateForUnscheduledElection_ThrowsExceptionTest(){
         RegisterCandidateRequest request = new RegisterCandidateRequest();
-        request.setElectionId(11L);
         request.setFirstName("Dayo");
         request.setLastName("Akinyemi");
         request.setPartyAffiliation(APC);
         request.setPositionContested(LGA);
-        Election election = adminService.findElectionBy(request.getElectionId());
+        Election election = adminService.findElectionBy(11L);
         assertThat(election.getCategory()).isEqualTo(NATIONAL);
-        assertThrows(DeniedAccessException.class, ()-> adminService.registerCandidate(request));
+        assertThrows(DeniedAccessException.class, ()-> adminService.registerCandidate(11L,request));
     }
 
     @Sql(scripts = "/adminTestDb/elections.sql")

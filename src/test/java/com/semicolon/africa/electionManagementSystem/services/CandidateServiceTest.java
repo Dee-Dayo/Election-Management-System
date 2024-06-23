@@ -1,10 +1,18 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.ReplaceOperation;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.DeleteCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.DeleteCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
+import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import org.junit.jupiter.api.Test;
@@ -31,17 +39,16 @@ public class  CandidateServiceTest {
         RegisterCandidateRequest request = new RegisterCandidateRequest();
         request.setFirstName("Ahmed");
         request.setLastName("Tinubu");
-        request.setEmail("lukasgraham73@gmail.com");
+        request.setEmail("victormsonter@gmail.com");
         request.setPassword("123456");
         request.setPartyAffiliation(LP);
         request.setElectionId(200L);
-        request.setAdminId(100L);
         request.setUsername("Bat");
         request.setPositionContested(NATIONAL);
         RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
         assertThat(response).isNotNull();
         assertThat(response.getCandidateId()).isNotNull();
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(5L);
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
     }
 
     @Test
@@ -52,7 +59,6 @@ public class  CandidateServiceTest {
         request.setEmail("femigba@gmail.com");
         request.setPassword("123456");
         request.setPartyAffiliation(PDP);
-        request.setAdminId(100L);
         request.setElectionId(200L);
         request.setUsername("Fems");
         request.setPositionContested(STATE);
@@ -66,7 +72,6 @@ public class  CandidateServiceTest {
         request2.setPassword("123456");
         request2.setPartyAffiliation(PDP);
         request2.setElectionId(200L);
-        request.setAdminId(100L);
         request2.setUsername("Fems");
         request2.setPositionContested(STATE);
         assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
@@ -88,10 +93,9 @@ public class  CandidateServiceTest {
         request.setPassword("123456");
         request.setPartyAffiliation(PDP);
         request.setElectionId(200L);
-        request.setAdminId(100L);
         request.setUsername("Bat");
         request.setPositionContested(STATE);
-        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateWith(request));
+        assertThrows(ElectionNotFoundException.class, ()-> candidateService.registerCandidateWith(request));
     }
 
     @Test
@@ -113,6 +117,19 @@ public class  CandidateServiceTest {
         Long electionId = 200L;
         List<Candidate> candidates = candidateService.findAllElectionCandidates(electionId);
         assertThat(candidates).hasSize(3);
+    }
+
+    @Test
+    public void updateCandidate_candidateIsUpdatedTest() throws JsonPointerException {
+        Long candidateId = 2L;
+        String firstName = candidateService.findCandidateBy(candidateId).getFirstName();
+        assertThat(firstName).isNotEqualTo("new name");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(new JsonPointer("/firstName"), new TextNode("new name")));
+        JsonPatch request = new JsonPatch(operations);
+        UpdateCandidateResponse response = candidateService.updateWith(candidateId, request);
+        assertThat(response).isNotNull();
+        firstName = candidateService.findCandidateBy(candidateId).getFirstName();
+        assertThat(firstName).isEqualTo("new name");
     }
 
 

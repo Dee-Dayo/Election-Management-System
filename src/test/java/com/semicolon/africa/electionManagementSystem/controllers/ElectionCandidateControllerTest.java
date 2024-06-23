@@ -2,6 +2,7 @@ package com.semicolon.africa.electionManagementSystem.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import com.semicolon.africa.electionManagementSystem.services.ElectionCandidateService;
 import org.junit.jupiter.api.Test;
@@ -32,12 +33,7 @@ class ElectionCandidateControllerTest {
 
         @Autowired
         private MockMvc mockMvc;
-        @Autowired
-        private ElectionCandidateService electionCandidateService;
-        @Autowired
-        private CandidateRepository candidateRepository;
-        @Autowired
-        private ObjectMapper objectMapper;
+
 
         @Test
         public void testThatCandidateCanRegister() throws JsonProcessingException {
@@ -56,6 +52,18 @@ class ElectionCandidateControllerTest {
 
 
         }
+
+
+    @Test
+    public void testThatElectionResultCanBeViewed() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(" /candidate/200")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andDo(print());
+    }
+
+
+
 
 
 

@@ -2,10 +2,11 @@ truncate table elections cascade;
 truncate table admin cascade;
 truncate table candidates cascade;
 truncate table voters cascade;
+truncate table votes cascade;
 
 
-insert into elections(election_id, title, start_date, end_date, category, time_created) values
-    (200, 'Presidential Elections', '2024-07-19T09:00', '2024-07-19T01:00', 'NATIONAL',
+insert into elections(election_id, title, start_date, end_date, category, schedule, time_created) values
+    (200, 'Presidential Elections', '2024-07-19T09:00', '2024-07-19T01:00', 'NATIONAL', 'SCHEDULED',
      '2024-06-19T09:52:36.836436300');
 
 

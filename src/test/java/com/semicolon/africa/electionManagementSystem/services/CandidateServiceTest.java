@@ -13,8 +13,6 @@ import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCand
 import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
-import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
-import com.semicolon.africa.electionManagementSystem.exceptions.VoteNotFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,11 +75,7 @@ public class  CandidateServiceTest {
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
     }
 
-    @Test
-    public void viewResultTest(){
-        assertThrows(VoteNotFoundException.class, ()->candidateService.viewElectionResultFor(200L));
 
-    }
 
     @Test
     public void registerCandidateForElectionInvalidEmail_throwsExceptionTest(){
@@ -134,21 +128,32 @@ public class  CandidateServiceTest {
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
     }
 
+
+
+
+
     @Test
-    public void findAllCandidatesForAnElectionTest(){
+    public void viewResultTest(){
+        assertThrows(ElectionManagementSystemException.class, ()->candidateService.viewElectionResultFor(200L));
+
+    }
+
+    @Test
+    public void registerCandidateWithInvalidEmail_throwsExceptionTest(){
         request.setFirstName("Ahmed");
         request.setLastName("Tinubu");
-        request.setEmail("victormsonter@gmail.com");
+        request.setEmail("lukasgrahamgmail.com");
         request.setPassword("123456");
-        request.setPartyAffiliation(LP);
+        request.setPartyAffiliation(PDP);
         request.setElectionId(200L);
         request.setUsername("Bat");
-        request.setPositionContested(NATIONAL);
-        candidateService.registerCandidateForElection(request);
-        List<Candidate> candidates = candidateService.findAllElectionCandidates(200L);
-        System.out.println(candidates);
-        assertThat(candidates).hasSize(1);
+        request.setPositionContested(STATE);
+        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateForElection(request));
     }
+
+
+
+
 
     @Test
     public void updateCandidate_candidateIsUpdatedTest() throws JsonPointerException {

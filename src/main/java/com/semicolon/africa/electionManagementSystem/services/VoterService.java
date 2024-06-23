@@ -3,6 +3,7 @@ package com.semicolon.africa.electionManagementSystem.services;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.UpdateVoterRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
 import com.semicolon.africa.electionManagementSystem.models.Voter;
@@ -18,7 +19,8 @@ public interface VoterService {
 
     Voter findVoterBy(Long voterId);
 
-    UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest);
+
+//    UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest);
 
 
 //    VoterRegistrationResponse updateVoterBioData(UpdateVoterRequest updateRequest);
@@ -27,4 +29,8 @@ public interface VoterService {
 //    VoterRegistrationResponse updateVoterBioData(UpdateVoterRequest updateRequest);
 
     UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch);
+
+    ShowElectionResultResponse viewElectionResult(Long electionId);
+
+    List<Voter> findAllRegisteredVoters(Long electionId);
 }

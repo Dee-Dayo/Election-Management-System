@@ -6,6 +6,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.UpdateVoterRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
@@ -16,6 +17,7 @@ import com.semicolon.africa.electionManagementSystem.repositories.VoterRepositor
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +25,20 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
-@AllArgsConstructor
+
 @Service
 public class VoterServiceImpl implements VoterService {
-    private final VoterRepository voterRepository;
-    private final ModelMapper modelMapper;
+    @Autowired
+    private VoterRepository voterRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    private  VoterService voterService;
+
+    private VoteService voteService;
+    @Autowired
+    public void setVoteService(@Lazy VoteService voteService) {
+        this.voteService = voteService;
+    }
 
     @Override
     public VoterRegistrationResponse registerVoter(VoterRegistrationRequest registrationRequest) {
@@ -60,18 +71,18 @@ public class VoterServiceImpl implements VoterService {
 
 
 
-    @Override
-    public UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest) {
-        Voter registeredVoter = voterRepository.findById(updateRequest.getVoterId()).
-                orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
-        registeredVoter = modelMapper.map(updateRequest, Voter.class);
-        registeredVoter.setRole(Role.VOTER);
-        registeredVoter = voterRepository.save(registeredVoter);
-
-        UpdateVoterResponse response = modelMapper.map(registeredVoter, UpdateVoterResponse.class);
-        response.setMessage("Voter Updated Successfully");
-        return response;
-    }
+//    @Override
+//    public UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest) {
+//        Voter registeredVoter = voterRepository.findById(updateRequest.getVoterId()).
+//                orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
+//        registeredVoter = modelMapper.map(updateRequest, Voter.class);
+//        registeredVoter.setRole(Role.VOTER);
+//        registeredVoter = voterRepository.save(registeredVoter);
+//
+//        UpdateVoterResponse response = modelMapper.map(registeredVoter, UpdateVoterResponse.class);
+//        response.setMessage("Voter Updated Successfully");
+//        return response;
+//    }
 
 
     @Override
@@ -87,6 +98,17 @@ public class VoterServiceImpl implements VoterService {
         } catch (JsonPatchException e) {
             throw new ElectionManagementSystemException("Incorrect Voter Id");
         }
+    }
+
+    @Override
+    public ShowElectionResultResponse viewElectionResult(Long electionId) {
+        return voteService.showResult(electionId);
+    }
+
+    @Override
+    public List<Voter> findAllRegisteredVoters(Long electionId) {
+
+        return voterRepository.findAll();
     }
 
 

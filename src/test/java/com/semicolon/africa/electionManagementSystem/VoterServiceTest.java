@@ -1,16 +1,20 @@
 package com.semicolon.africa.electionManagementSystem;
 
-import com.fasterxml.jackson.core.JsonPointer;
+//import com.fasterxml.jackson.core.JsonPointer;
+//import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.UpdateVoterRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
+import com.semicolon.africa.electionManagementSystem.models.Voter;
 import com.semicolon.africa.electionManagementSystem.services.VoterService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +73,15 @@ public class VoterServiceTest {
 
     }
     @Test
+    public void findAllRegisteredVotersTest() {
+        Long electionId = 200L;
+        List<Voter> voters = voterService.findAllRegisteredVoters(electionId);
+        assertEquals(5, voterService.getNumberOfVoters().size());
+
+    }
+
+
+    @Test
     public void updateVoterBioTest() throws JsonPointerException {
         String lastName = voterService.findVoterBy(200L).getLastName();
         assertThat(lastName).isNotEqualTo("Samson");
@@ -77,8 +90,13 @@ public class VoterServiceTest {
         UpdateVoterResponse updateResponse = voterService.updateVoterDetails(200L, updated);
         assertThat(updateResponse).isNotNull();
         lastName = voterService.findVoterBy(200L).getLastName();
-        assertThat(lastName).isNotEqualTo("Samson");
+        assertThat(lastName).isEqualTo("Samson");
 
+    }
+    @Test
+    public void viewElectionResult() {
+        ShowElectionResultResponse resultResponse = voterService.viewElectionResult(200L);
+        assertThat(resultResponse).isNotNull();
     }
 
 //    @Test

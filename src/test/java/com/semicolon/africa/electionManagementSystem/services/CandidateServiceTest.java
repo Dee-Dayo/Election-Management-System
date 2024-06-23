@@ -143,10 +143,78 @@ public class  CandidateServiceTest {
         request.setElectionId(200L);
         request.setUsername("Bat");
         request.setPositionContested(NATIONAL);
-        candidateService.registerCandidateWith(request);
-        List<Candidate> candidates = candidateService.findAllElectionCandidates(200L);
-        System.out.println(candidates);
-        assertThat(candidates).hasSize(1);
+        RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
+        assertThat(response).isNotNull();
+        assertThat(response.getCandidateId()).isNotNull();
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
+    }
+
+    @Test
+    public void testRegisterCandidateForSameCategoryAndSameParty_listRemainsTheSame(){
+        RegisterCandidateRequest request = new RegisterCandidateRequest();
+        request.setFirstName("Femi");
+        request.setLastName("Gbajabiamila");
+        request.setEmail("femigba@gmail.com");
+        request.setPassword("123456");
+        request.setPartyAffiliation(PDP);
+        request.setElectionId(200L);
+        request.setUsername("Fems");
+        request.setPositionContested(STATE);
+       candidateService.registerCandidateWith(request);
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
+
+        RegisterCandidateRequest request2 = new RegisterCandidateRequest();
+        request2.setFirstName("Atiku");
+        request2.setLastName("Obi");
+        request2.setEmail("jojofolani@gmail.com");
+        request2.setPassword("123456");
+        request2.setPartyAffiliation(PDP);
+        request2.setElectionId(200L);
+        request2.setUsername("Fems");
+        request2.setPositionContested(STATE);
+        assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
+        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
+    }
+
+    @Test
+    public void viewResultTest(){
+        var result = candidateService.viewElectionResultFor(200L);
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void registerCandidateWithInvalidEmail_throwsExceptionTest(){
+        RegisterCandidateRequest request = new RegisterCandidateRequest();
+        request.setFirstName("Ahmed");
+        request.setLastName("Tinubu");
+        request.setEmail("lukasgrahamgmail.com");
+        request.setPassword("123456");
+        request.setPartyAffiliation(PDP);
+        request.setElectionId(200L);
+        request.setUsername("Bat");
+        request.setPositionContested(STATE);
+        assertThrows(ElectionNotFoundException.class, ()-> candidateService.registerCandidateWith(request));
+    }
+
+    @Test
+    public void deleteCandidate_candidateIsRemovedFromElectionTest(){
+        Long adminId = 100L;
+        Long electionId = 200L;
+        Long candidateId = 101L;
+        DeleteCandidateRequest request = new DeleteCandidateRequest();
+        request.setElectionId(electionId);
+        request.setCandidateId(candidateId);
+        request.setAdminId(adminId);
+        DeleteCandidateResponse response = candidateService.deleteCandidate(request);
+        assertThat(response.getMessage().contains("candidate deleted"));
+
+    }
+
+    @Test
+    public void findAllCandidatesForAnElectionTest(){
+        Long electionId = 200L;
+        List<Candidate> candidates = candidateService.findAllElectionCandidates(electionId);
+        assertThat(candidates).hasSize(3);
     }
 
     @Test

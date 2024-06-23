@@ -21,7 +21,7 @@ public interface CandidateService {
 
     Candidate findCandidateBy(Long candidateId);
 
-    ShowElectionResultResponse viewElectionResultFor(long l);
+    ShowElectionResultResponse viewElectionResultFor(long electionId);
 
     DeleteCandidateResponse deleteCandidate(DeleteCandidateRequest request);
 

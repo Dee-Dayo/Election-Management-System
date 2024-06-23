@@ -78,9 +78,8 @@ public class ElectionManagementService implements AdminService{
     }
 
     @Override
-    public RegisterCandidateResponse registerCandidate(Long electionId, RegisterCandidateRequest request) {
-            RegisterCandidateResponse response = candidateService.registerCandidateWith(electionId, request);
-        return response;
+    public RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request) {
+        return candidateService.registerCandidateWith(request);
     }
 
     @Override
@@ -125,22 +124,7 @@ public class ElectionManagementService implements AdminService{
         return modelMapper.map(admin, RegisterAdminResponse.class);
     }
 
-    private static ModelMapper configure(ModelMapper modelMapper) {
-        modelMapper.typeMap(Candidate.class, RegisterCandidateResponse.class).addMappings(
-                mapper -> {
-                    mapper.map(Candidate::getCandidateId, RegisterCandidateResponse::setCandidateId);
-                    mapper.map(Candidate::getFirstName, RegisterCandidateResponse::setFirstName);
-                    mapper.map(Candidate::getLastName, RegisterCandidateResponse::setLastName);
-                    mapper.map(Candidate::getPartyAffiliation, RegisterCandidateResponse::setPartyAffiliation);
-                    mapper.map(src -> src.getElection().getStartDate(), RegisterCandidateResponse::setStartDate);
-                    mapper.map(src -> src.getElection().getEndDate(), RegisterCandidateResponse::setEndDate);
-                    mapper.map(src -> src.getElection().getCategory(), RegisterCandidateResponse::setCategory);
-                    mapper.map(src -> src.getElection().getSchedule(), RegisterCandidateResponse::setSchedule);
-                    mapper.map(src -> src.getElection().getTitle(), RegisterCandidateResponse::setElectionTitle);
-                }
-        );
-        return modelMapper;
-    }
+
 
 
 }

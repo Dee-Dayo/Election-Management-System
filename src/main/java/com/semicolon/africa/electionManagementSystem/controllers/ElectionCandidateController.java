@@ -20,7 +20,7 @@ public class ElectionCandidateController {
     @PostMapping("/register")
     public ResponseEntity<?> RegisterCandidateWith(@RequestBody RegisterCandidateRequest registerCandidateRequest){
         try{
-            RegisterCandidateResponse response = electionCandidateService.registerCandidateWith(200L,registerCandidateRequest);
+            RegisterCandidateResponse response = electionCandidateService.registerCandidateWith(registerCandidateRequest);
             return ResponseEntity.status(CREATED).body(response);
         } catch (ElectionManagementSystemException message){
             return ResponseEntity.status(BAD_REQUEST).body(message.getMessage());

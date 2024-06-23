@@ -60,8 +60,9 @@ class ElectionManagementServiceTest {
         request.setFirstName("Dayo");
         request.setLastName("Akinyemi");
         request.setPartyAffiliation(APC);
+        request.setElectionId(11L);
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response = adminService.registerCandidate(11L,request);
+        RegisterCandidateResponse response = adminService.registerCandidate(request);
         assertCandidateIsRegistered(response);
 
     }
@@ -87,9 +88,10 @@ class ElectionManagementServiceTest {
         request.setLastName("Akinyemi");
         request.setPartyAffiliation(APC);
         request.setPositionContested(LGA);
+        request.setElectionId(11L);
         Election election = adminService.findElectionBy(11L);
         assertThat(election.getCategory()).isEqualTo(NATIONAL);
-        assertThrows(DeniedAccessException.class, ()-> adminService.registerCandidate(11L,request));
+        assertThrows(DeniedAccessException.class, ()-> adminService.registerCandidate(request));
     }
 
     @Sql(scripts = "/adminTestDb/elections.sql")

@@ -58,19 +58,21 @@ public class  CandidateServiceTest {
         request.setPassword("123456");
         request.setPartyAffiliation(PDP);
         request.setUsername("Fems");
+        request.setElectionId(200L);
         request.setPositionContested(NATIONAL);
-        candidateService.registerCandidateWith(200L,request);
+        candidateService.registerCandidateWith(request);
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
 
         RegisterCandidateRequest request2 = new RegisterCandidateRequest();
         request2.setFirstName("Atiku");
         request2.setLastName("Obi");
         request2.setEmail("jojofolani@gmail.com");
+        request.setElectionId(200L);
         request2.setPassword("123456");
         request2.setPartyAffiliation(PDP);
         request2.setUsername("Fems");
         request2.setPositionContested(NATIONAL);
-        assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(200L,request2));
+        assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
     }
 
@@ -86,10 +88,11 @@ public class  CandidateServiceTest {
         request.setLastName("Tinubu");
         request.setEmail("lukasgrahamgmail.com");
         request.setPassword("123456");
+        request.setElectionId(200L);
         request.setPartyAffiliation(PDP);
         request.setUsername("Bat");
         request.setPositionContested(STATE);
-        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateWith(200L,request));
+        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateWith(request));
     }
 
     @Test
@@ -100,8 +103,9 @@ public class  CandidateServiceTest {
         request.setPassword("123456");
         request.setPartyAffiliation(LP);
         request.setUsername("Bat");
+        request.setElectionId(200L);
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(200L,request);
+        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(request);
         assertThat(response1.getCandidateId()).isNotNull();
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
         DeleteCandidateRequest request1 = new DeleteCandidateRequest();
@@ -121,8 +125,9 @@ public class  CandidateServiceTest {
         request.setPassword("123456");
         request.setPartyAffiliation(LP);
         request.setUsername("Bat");
+        request.setElectionId(200L);
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(200L,request);
+        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(request);
         assertThat(response1).isNotNull();
         assertThat(response1.getCandidateId()).isNotNull();
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
@@ -135,9 +140,10 @@ public class  CandidateServiceTest {
         request.setEmail("victormsonter@gmail.com");
         request.setPassword("123456");
         request.setPartyAffiliation(LP);
+        request.setElectionId(200L);
         request.setUsername("Bat");
         request.setPositionContested(NATIONAL);
-        candidateService.registerCandidateWith(200L,request);
+        candidateService.registerCandidateWith(request);
         List<Candidate> candidates = candidateService.findAllElectionCandidates(200L);
         System.out.println(candidates);
         assertThat(candidates).hasSize(1);
@@ -150,9 +156,10 @@ public class  CandidateServiceTest {
         request.setEmail("victormsonter@gmail.com");
         request.setPassword("123456");
         request.setPartyAffiliation(LP);
+        request.setElectionId(200L);
         request.setUsername("Bat");
         request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(200L,request);
+        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(request);
         String firstName = candidateService.findCandidateBy(response1.getCandidateId()).getFirstName();
         assertThat(firstName).isNotEqualTo("new name");
         List<JsonPatchOperation> operations = List.of(new ReplaceOperation(new JsonPointer("/firstName"), new TextNode("new name")));

@@ -16,7 +16,7 @@ public interface AdminService {
 
     ElectionScheduledResponse getElectionSchedule(Long electionId);
 
-    RegisterCandidateResponse registerCandidate(Long electionId,RegisterCandidateRequest request);
+    RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request);
 
     Election findElectionBy(Long electionId);
 

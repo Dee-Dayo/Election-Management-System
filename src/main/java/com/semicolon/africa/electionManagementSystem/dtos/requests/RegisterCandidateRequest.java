@@ -14,6 +14,7 @@ public class RegisterCandidateRequest {
     private String email;
     private String username;
     private String password;
+    private Long electionId;
     private Category positionContested;
     private PartyAffiliation partyAffiliation;
 

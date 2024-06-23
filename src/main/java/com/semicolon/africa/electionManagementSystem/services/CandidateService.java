@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public interface CandidateService {
 
-    RegisterCandidateResponse registerCandidateWith(Long electionId, RegisterCandidateRequest request);
+    RegisterCandidateResponse registerCandidateWith(RegisterCandidateRequest request);
 
     Long getNumberOfCandidates();
 

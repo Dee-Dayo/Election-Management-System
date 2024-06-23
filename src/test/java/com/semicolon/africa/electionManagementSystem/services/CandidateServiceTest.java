@@ -62,7 +62,7 @@ public class  CandidateServiceTest {
         request.setElectionId(200L);
         request.setUsername("Fems");
         request.setPositionContested(STATE);
-        candidateService.registerCandidateWith(request);
+       candidateService.registerCandidateWith(request);
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
 
         RegisterCandidateRequest request2 = new RegisterCandidateRequest();

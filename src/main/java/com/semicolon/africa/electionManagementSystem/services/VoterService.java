@@ -15,20 +15,13 @@ import java.util.List;
 public interface VoterService {
     VoterRegistrationResponse registerVoter(VoterRegistrationRequest registrationRequest);
 
-    List<Voter> getNumberOfVoters();
+    Long getNumberOfVoters();
 
     Voter findVoterBy(Long voterId);
 
+    UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest);
 
-//    UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest);
-
-
-//    VoterRegistrationResponse updateVoterBioData(UpdateVoterRequest updateRequest);
-
-
-//    VoterRegistrationResponse updateVoterBioData(UpdateVoterRequest updateRequest);
-
-    UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch);
+//    UpdateVoterResponse updateVoterBioData(Long voterId, JsonPatch jsonPatch);
 
     ShowElectionResultResponse viewElectionResult(Long electionId);
 

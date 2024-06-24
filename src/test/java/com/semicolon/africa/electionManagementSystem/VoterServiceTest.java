@@ -1,13 +1,5 @@
 package com.semicolon.africa.electionManagementSystem;
 
-//import com.fasterxml.jackson.core.JsonPointer;
-//import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.github.fge.jackson.jsonpointer.JsonPointer;
-import com.github.fge.jackson.jsonpointer.JsonPointerException;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchOperation;
-import com.github.fge.jsonpatch.ReplaceOperation;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.UpdateVoterRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistrationRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
@@ -15,7 +7,9 @@ import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterR
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.models.Voter;
+import com.semicolon.africa.electionManagementSystem.repositories.VoterRepository;
 import com.semicolon.africa.electionManagementSystem.services.VoterService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,18 +24,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class VoterServiceTest {
     @Autowired
     VoterService voterService;
+    @Autowired
+    VoterRepository voterRepository;
+    @BeforeEach
+    public void setUp() {
+        voterRepository.deleteAll();
+    }
+
 
     @Test
     public void registerVoterTest() {
             VoterRegistrationRequest registrationRequest = new VoterRegistrationRequest();
             registrationRequest.setFirstName("John");
             registrationRequest.setLastName("Doe");
-            registrationRequest.setEmail("john@doe.com");
+            registrationRequest.setEmail("johndoe@gmail.com");
             registrationRequest.setDateOfBirth("1990-01-01");
             registrationRequest.setStateOfOrigin("Lagos");
             registrationRequest.setPassword("password");
             VoterRegistrationResponse response = voterService.registerVoter(registrationRequest);
-            assertEquals(5, voterService.getNumberOfVoters().size());
+            assertEquals(1, voterService.getNumberOfVoters());
 
     }
 
@@ -55,8 +56,22 @@ public class VoterServiceTest {
         registrationRequest.setStateOfOrigin("Lagos");
         registrationRequest.setPassword("password");
         voterService.registerVoter(registrationRequest);
-        assertEquals(5, voterService.getNumberOfVoters().size());
         assertThrows(ElectionManagementSystemException.class, ()-> voterService.registerVoter(registrationRequest));
+        assertThat(voterService.getNumberOfVoters()).isEqualTo(1L);
+
+    }
+    @Test
+    public void registerVoterWithInvalidEmail_throwsExceptionTest() {
+        VoterRegistrationRequest registrationRequest = new VoterRegistrationRequest();
+        registrationRequest.setFirstName("John");
+        registrationRequest.setLastName("Doe");
+        registrationRequest.setEmail("johndoe@gmail.com");
+        registrationRequest.setDateOfBirth("1990-01-01");
+        registrationRequest.setStateOfOrigin("Lagos");
+        registrationRequest.setPassword("password");
+        voterService.registerVoter(registrationRequest);
+        assertThrows(ElectionManagementSystemException.class, ()-> voterService.registerVoter(registrationRequest));
+        assertThat(voterService.getNumberOfVoters()).isEqualTo(1L);
 
     }
 
@@ -74,51 +89,62 @@ public class VoterServiceTest {
     }
     @Test
     public void findAllRegisteredVotersTest() {
+        VoterRegistrationRequest registrationRequest = new VoterRegistrationRequest();
+        registrationRequest.setFirstName("John");
+        registrationRequest.setLastName("Doe");
+        registrationRequest.setEmail("johndoe@gmail.com");
+        registrationRequest.setDateOfBirth("1990-01-01");
+        registrationRequest.setStateOfOrigin("Lagos");
+        registrationRequest.setPassword("password");
+        VoterRegistrationResponse response = voterService.registerVoter(registrationRequest);
+        assertEquals(1, voterService.getNumberOfVoters());
+
         Long electionId = 200L;
         List<Voter> voters = voterService.findAllRegisteredVoters(electionId);
-        assertEquals(5, voterService.getNumberOfVoters().size());
+        assertThat(voters.size()).isEqualTo(1);
 
     }
 
 
-    @Test
-    public void updateVoterBioTest() throws JsonPointerException {
-        String lastName = voterService.findVoterBy(200L).getLastName();
-        assertThat(lastName).isNotEqualTo("Samson");
-        List<JsonPatchOperation> operationList = List.of(new ReplaceOperation(new JsonPointer("/lastName"), new TextNode("Samson")));
-        JsonPatch updated = new JsonPatch(operationList);
-        UpdateVoterResponse updateResponse = voterService.updateVoterDetails(200L, updated);
-        assertThat(updateResponse).isNotNull();
-        lastName = voterService.findVoterBy(200L).getLastName();
-        assertThat(lastName).isEqualTo("Samson");
-
-    }
+//    @Test
+//    public void updateVoterBioTest() throws JsonPointerException {
+//        String lastName = voterService.findVoterBy(200L).getLastName();
+//        assertThat(lastName).isNotEqualTo("Samson");
+//        List<JsonPatchOperation> operationList = List.of(new ReplaceOperation(new JsonPointer("/lastName"), new TextNode("Samson")));
+//        JsonPatch updated = new JsonPatch(operationList);
+//        UpdateVoterResponse updateResponse = voterService.updateVoterDetails(200L, updated);
+//        assertThat(updateResponse).isNotNull();
+//        lastName = voterService.findVoterBy(200L).getLastName();
+//        assertThat(lastName).isEqualTo("Samson");
+//
+//    }
     @Test
     public void viewElectionResult() {
         ShowElectionResultResponse resultResponse = voterService.viewElectionResult(200L);
         assertThat(resultResponse).isNotNull();
     }
 
-//    @Test
-//    public void updateVoterBioDataTest() {
-//        VoterRegistrationRequest registrationRequest = new VoterRegistrationRequest();
-//        registrationRequest.setFirstName("Rebecca");
-//        registrationRequest.setLastName("Nelson");
-//        registrationRequest.setEmail("Darhyor2050@gmail.com");
-//        registrationRequest.setDateOfBirth("1999-05-20");
-//        registrationRequest.setStateOfOrigin("Lagos");
-//        registrationRequest.setPassword("password");
-//        VoterRegistrationResponse response = voterService.registerVoter(registrationRequest);
-//        assertEquals(5, voterService.getNumberOfVoters().size());
-//
-//        UpdateVoterRequest updateRequest = new UpdateVoterRequest();
-//        updateRequest.setVoterId(200L);
-//        updateRequest.setFirstName(registrationRequest.getFirstName());
-//        updateRequest.setLastName("Sams");
-//        updateRequest.setPassword(registrationRequest.getPassword());
-//        UpdateVoterResponse newResponse = voterService.updateVoterBioData(updateRequest);
-//        assertEquals(5, voterService.getNumberOfVoters().size());
-//
-//    }
+    @Test
+    public void updateVoterBioDataTest() {
+        VoterRegistrationRequest registrationRequest = new VoterRegistrationRequest();
+        registrationRequest.setFirstName("John");
+        registrationRequest.setLastName("Doe");
+        registrationRequest.setEmail("johndoe@gmail.com");
+        registrationRequest.setDateOfBirth("1990-01-01");
+        registrationRequest.setStateOfOrigin("Lagos");
+        registrationRequest.setPassword("password");
+        VoterRegistrationResponse response = voterService.registerVoter(registrationRequest);
+        assertThat(voterService.getNumberOfVoters()).isEqualTo(1L);
+
+        UpdateVoterRequest updateRequest = new UpdateVoterRequest();
+        updateRequest.setVoterId(response.getVoterId());
+        updateRequest.setFirstName(registrationRequest.getFirstName());
+        updateRequest.setLastName("Dope");
+        updateRequest.setPassword(registrationRequest.getPassword());
+
+        UpdateVoterResponse newResponse = voterService.updateVoterBioData(updateRequest);
+        assertThat(voterService.getNumberOfVoters()).isEqualTo(1L);
+
+    }
 
 }

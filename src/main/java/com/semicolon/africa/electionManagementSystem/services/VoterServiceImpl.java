@@ -9,21 +9,21 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.VoterRegistra
 import com.semicolon.africa.electionManagementSystem.dtos.responses.ShowElectionResultResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.UpdateVoterResponse;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.VoterRegistrationResponse;
-import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
 import com.semicolon.africa.electionManagementSystem.models.Role;
 import com.semicolon.africa.electionManagementSystem.models.Voter;
 import com.semicolon.africa.electionManagementSystem.repositories.VoterRepository;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+
+import static com.semicolon.africa.electionManagementSystem.utils.validations.Validations.validateFor;
+import static com.semicolon.africa.electionManagementSystem.utils.validations.Validations.verifyEmailAddress;
 
 
 @Service
@@ -36,6 +36,9 @@ public class VoterServiceImpl implements VoterService {
 
     private VoteService voteService;
     @Autowired
+    private AdminService adminService;
+
+    @Autowired
     public void setVoteService(@Lazy VoteService voteService) {
         this.voteService = voteService;
     }
@@ -46,10 +49,10 @@ public class VoterServiceImpl implements VoterService {
         LocalDate dateOfBirth = LocalDate.parse(registrationRequest.getDateOfBirth());
         if(Period.between(dateOfBirth,LocalDate.now()).getYears() < 18) throw new ElectionManagementSystemException("Not eligible to vote");
 
-
         Voter voter = new Voter();
         Voter registeredVoter = voterRepository.findByEmail(registrationRequest.getEmail());
-        if (registeredVoter != null) throw new ElectionManagementSystemException(registeredVoter.getEmail() + " already exist");
+        validateFor(registeredVoter);
+        verifyEmailAddress(registrationRequest.getEmail());
         voter = modelMapper.map(registrationRequest, Voter.class);
         voter.setRole(Role.VOTER);
         voter = voterRepository.save(voter);
@@ -60,8 +63,8 @@ public class VoterServiceImpl implements VoterService {
     }
 
     @Override
-    public List<Voter> getNumberOfVoters() {
-        return voterRepository.findAll();
+    public Long getNumberOfVoters() {
+        return voterRepository.count();
     }
 
     @Override
@@ -71,34 +74,34 @@ public class VoterServiceImpl implements VoterService {
 
 
 
-//    @Override
-//    public UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest) {
-//        Voter registeredVoter = voterRepository.findById(updateRequest.getVoterId()).
-//                orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
-//        registeredVoter = modelMapper.map(updateRequest, Voter.class);
-//        registeredVoter.setRole(Role.VOTER);
-//        registeredVoter = voterRepository.save(registeredVoter);
-//
-//        UpdateVoterResponse response = modelMapper.map(registeredVoter, UpdateVoterResponse.class);
-//        response.setMessage("Voter Updated Successfully");
-//        return response;
-//    }
-
-
     @Override
-    public UpdateVoterResponse updateVoterDetails(Long voterId, JsonPatch jsonPatch) {
-        try {
-            Voter registeredVoter = findVoterBy(voterId);
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode node = mapper.convertValue(registeredVoter, JsonNode.class);
-            node = jsonPatch.apply(node);
-            registeredVoter = mapper.convertValue(node, Voter.class);
-            registeredVoter = voterRepository.save(registeredVoter);
-            return modelMapper.map(registeredVoter, UpdateVoterResponse.class);
-        } catch (JsonPatchException e) {
-            throw new ElectionManagementSystemException("Incorrect Voter Id");
-        }
+    public UpdateVoterResponse updateVoterBioData(UpdateVoterRequest updateRequest) {
+        Voter registeredVoter = voterRepository.findById(updateRequest.getVoterId()).
+                orElseThrow(() -> new ElectionManagementSystemException("Voter does not exist"));
+        registeredVoter = modelMapper.map(updateRequest, Voter.class);
+        registeredVoter.setRole(Role.VOTER);
+        registeredVoter = voterRepository.save(registeredVoter);
+
+        UpdateVoterResponse response = modelMapper.map(registeredVoter, UpdateVoterResponse.class);
+        response.setMessage("Voter Updated Successfully");
+        return response;
     }
+
+
+//    @Override
+//    public UpdateVoterResponse updateVoterBioData(Long voterId, JsonPatch jsonPatch) {
+//        try {
+//            Voter registeredVoter = findVoterBy(voterId);
+//            ObjectMapper mapper = new ObjectMapper();
+//            JsonNode node = mapper.convertValue(registeredVoter, JsonNode.class);
+//            node = jsonPatch.apply(node);
+//            registeredVoter = mapper.convertValue(node, Voter.class);
+//            registeredVoter = voterRepository.save(registeredVoter);
+//            return modelMapper.map(registeredVoter, UpdateVoterResponse.class);
+//        } catch (JsonPatchException e) {
+//            throw new ElectionManagementSystemException("Incorrect Voter Id");
+//        }
+//    }
 
     @Override
     public ShowElectionResultResponse viewElectionResult(Long electionId) {
@@ -107,7 +110,7 @@ public class VoterServiceImpl implements VoterService {
 
     @Override
     public List<Voter> findAllRegisteredVoters(Long electionId) {
-
+        adminService.findElectionBy(electionId);
         return voterRepository.findAll();
     }
 

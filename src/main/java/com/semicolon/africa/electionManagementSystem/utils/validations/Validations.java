@@ -3,7 +3,6 @@ package com.semicolon.africa.electionManagementSystem.utils.validations;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.RegisterCandidateResponse;
 import com.semicolon.africa.electionManagementSystem.exceptions.ElectionManagementSystemException;
-import com.semicolon.africa.electionManagementSystem.exceptions.NoVoterFoundException;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
 import org.modelmapper.ModelMapper;

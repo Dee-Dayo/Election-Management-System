@@ -1,5 +1,6 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
+import com.semicolon.africa.electionManagementSystem.ElectionManagementSystemApplication;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.CancelElectionRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdminRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
@@ -12,6 +13,7 @@ import com.semicolon.africa.electionManagementSystem.models.Election;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDateTime;

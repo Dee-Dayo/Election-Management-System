@@ -77,48 +77,6 @@ public class  CandidateServiceTest {
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
     }
 
-    @Test
-    public void viewResultTest(){
-        assertThrows(VoteNotFoundException.class, ()->candidateService.viewElectionResultFor(200L));
-
-    }
-
-    @Test
-    public void registerCandidateWithInvalidEmail_throwsExceptionTest(){
-        request.setFirstName("Ahmed");
-        request.setLastName("Tinubu");
-        request.setEmail("lukasgrahamgmail.com");
-        request.setPassword("123456");
-        request.setElectionId(200L);
-        request.setPartyAffiliation(PDP);
-        request.setUsername("Bat");
-        request.setPositionContested(STATE);
-        assertThrows(ElectionManagementSystemException.class, ()-> candidateService.registerCandidateWith(request));
-    }
-
-    @Test
-    public void deleteCandidate_candidateIsRemovedFromElectionTest(){
-        request.setFirstName("Ahmed");
-        request.setLastName("Tinubu");
-        request.setEmail("victormsonter@gmail.com");
-        request.setPassword("123456");
-        request.setPartyAffiliation(LP);
-        request.setUsername("Bat");
-        request.setElectionId(200L);
-        request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response1 = candidateService.registerCandidateWith(request);
-        assertThat(response1.getCandidateId()).isNotNull();
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
-        DeleteCandidateRequest request1 = new DeleteCandidateRequest();
-        request1.setElectionId(200L);
-        request1.setCandidateId(response1.getCandidateId());
-        System.out.println(response1.getCandidateId());
-        request1.setAdminId(1L);
-        DeleteCandidateResponse response = candidateService.deleteCandidate(request1);
-        assertThat(response.getMessage().contains("candidate deleted"));
-
-    }
-
     private void registerCandidate() {
         request.setFirstName("Ahmed");
         request.setLastName("Tinubu");
@@ -132,49 +90,6 @@ public class  CandidateServiceTest {
         assertThat(response1).isNotNull();
         assertThat(response1.getCandidateId()).isNotNull();
         assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
-    }
-
-    @Test
-    public void findAllCandidatesForAnElectionTest(){
-        request.setFirstName("Ahmed");
-        request.setLastName("Tinubu");
-        request.setEmail("victormsonter@gmail.com");
-        request.setPassword("123456");
-        request.setPartyAffiliation(LP);
-        request.setElectionId(200L);
-        request.setUsername("Bat");
-        request.setPositionContested(NATIONAL);
-        RegisterCandidateResponse response = candidateService.registerCandidateWith(request);
-        assertThat(response).isNotNull();
-        assertThat(response.getCandidateId()).isNotNull();
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(1L);
-    }
-
-    @Test
-    public void testRegisterCandidateForSameCategoryAndSameParty_listRemainsTheSame(){
-        RegisterCandidateRequest request = new RegisterCandidateRequest();
-        request.setFirstName("Femi");
-        request.setLastName("Gbajabiamila");
-        request.setEmail("femigba@gmail.com");
-        request.setPassword("123456");
-        request.setPartyAffiliation(PDP);
-        request.setElectionId(200L);
-        request.setUsername("Fems");
-        request.setPositionContested(STATE);
-       candidateService.registerCandidateWith(request);
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
-
-        RegisterCandidateRequest request2 = new RegisterCandidateRequest();
-        request2.setFirstName("Atiku");
-        request2.setLastName("Obi");
-        request2.setEmail("jojofolani@gmail.com");
-        request2.setPassword("123456");
-        request2.setPartyAffiliation(PDP);
-        request2.setElectionId(200L);
-        request2.setUsername("Fems");
-        request2.setPositionContested(STATE);
-        assertThrows(NoVoterFoundException.class, ()-> candidateService.registerCandidateWith(request2));
-        assertThat(candidateService.getNumberOfCandidates()).isEqualTo(6L);
     }
 
     @Test

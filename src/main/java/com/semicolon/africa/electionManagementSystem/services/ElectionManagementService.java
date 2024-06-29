@@ -14,8 +14,10 @@ import com.semicolon.africa.electionManagementSystem.repositories.AdminRepositor
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import com.semicolon.africa.electionManagementSystem.repositories.ElectionRepository;
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +28,11 @@ import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHE
 import static com.semicolon.africa.electionManagementSystem.utils.validations.Validations.verifyEmailAddress;
 
 @Service
-//@AllArgsConstructor
 public class ElectionManagementService implements AdminService{
 
-    private final ElectionRepository electionRepository;
-    private final AdminRepository adminRepository;
-    private final CandidateService candidateService;
+    private ElectionRepository electionRepository;
+    private AdminRepository adminRepository;
+    private CandidateService candidateService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -46,9 +47,17 @@ public class ElectionManagementService implements AdminService{
         //Get All Elections Scheduled and Cancelled by an Admin
         //Start Election
 
-    public ElectionManagementService(ElectionRepository electionRepository, AdminRepository adminRepository, CandidateService candidateService){
+
+    @Autowired
+    public void setElectionRepository(@Lazy ElectionRepository electionRepository){
         this.electionRepository = electionRepository;
+    }
+    @Autowired
+    public void setAdminRepository(@Lazy AdminRepository adminRepository){
         this.adminRepository = adminRepository;
+    }
+    @Autowired
+    public void setCandidateService(@Lazy CandidateService candidateService){
         this.candidateService = candidateService;
     }
     @Override

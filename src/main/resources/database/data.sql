@@ -2,7 +2,7 @@ truncate table elections cascade;
 truncate table admin cascade;
 truncate table candidates cascade;
 truncate table voters cascade;
-truncate table votes cascade;
+
 
 
 insert into elections(election_id, title, start_date, end_date, category, schedule, time_created) values
@@ -27,7 +27,7 @@ insert into candidates(candidate_id, first_name, last_name, username, email, pas
  '2024-06-19T09:52:36.836436300'),
 (103, 'Patience', 'Goodluck', 'Pg', 'aramideotenaike@gmail.com', 'password', 'NATIONAL', 'YPP', 200,
  '2024-06-19T09:52:36.836436300');
-
+truncate table votes cascade;
 insert into votes(vote_id, affiliation,election_election_id) values
 (100,'PDP',200),
 (101,'APC',200),

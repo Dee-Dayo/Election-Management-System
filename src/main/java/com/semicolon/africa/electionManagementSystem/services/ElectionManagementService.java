@@ -1,9 +1,7 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
-import com.semicolon.africa.electionManagementSystem.dtos.requests.CancelElectionRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdminRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.*;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
 import com.semicolon.africa.electionManagementSystem.exceptions.*;
 import com.semicolon.africa.electionManagementSystem.models.Admin;
@@ -20,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.semicolon.africa.electionManagementSystem.models.Role.ADMIN;
@@ -137,6 +136,21 @@ public class ElectionManagementService implements AdminService{
         return admin;
     }
 
+    @Override
+    public RescheduleElectionResponse rescheduleElection(RescheduleElectionRequest request) {
+        Election election = findElectionBy(request.getElectionId());
+        Admin reScheduler = getAdmin(request.getReSchedulerId());
+        election.setReScheduledBy(reScheduler.getAdminId());
+        if (request.getUpdateStartTime() != null)election.setStartDate(LocalDateTime.parse(request.getUpdateStartTime()));
+        if (request.getUpdateEndTime() != null)election.setEndDate(LocalDateTime.parse(request.getUpdateEndTime()));
+        election = electionRepository.save(election);
+        ModelMapper mapper =  configureMapper(modelMapper);
+        RescheduleElectionResponse response = mapper.map(election,RescheduleElectionResponse.class);
+        response.setMessage("Election Rescheduled Successfully");
+
+        return response;
+    }
+
     private static ModelMapper configure(ModelMapper modelMapper) {
         modelMapper.typeMap(Candidate.class, RegisterCandidateResponse.class).addMappings(
                 mapper -> {
@@ -149,6 +163,21 @@ public class ElectionManagementService implements AdminService{
                     mapper.map(src -> src.getElection().getCategory(), RegisterCandidateResponse::setCategory);
                     mapper.map(src -> src.getElection().getSchedule(), RegisterCandidateResponse::setSchedule);
                     mapper.map(src -> src.getElection().getTitle(), RegisterCandidateResponse::setElectionTitle);
+                }
+        );
+        return modelMapper;
+    }
+
+    private ModelMapper configureMapper(ModelMapper modelMapper){
+        modelMapper.typeMap(Election.class,RescheduleElectionResponse.class).addMappings(
+                mapper -> {
+                    mapper.map(Election::getElectionId,RescheduleElectionResponse::setElectionId);
+                    mapper.map(Election::getStartDate, RescheduleElectionResponse::setNewStartDateTime);
+                    mapper.map(Election::getEndDate, RescheduleElectionResponse::setNewEndDateTime);
+                    mapper.map(Election::getTitle, RescheduleElectionResponse::setElectionTitle);
+                    mapper.map(Election::getCategory, RescheduleElectionResponse::setElectionCategory);
+                    mapper.map(src -> getAdmin(src.getAdminScheduler()).getLastName() +" "+ getAdmin(src.getAdminScheduler()).getFirstName(), RescheduleElectionResponse::setScheduledBy);
+                    mapper.map(src -> getAdmin(src.getReScheduledBy()).getFirstName() +" "+ getAdmin(src.getReScheduledBy()).getLastName(),RescheduleElectionResponse::setReSchedulerName);
                 }
         );
         return modelMapper;

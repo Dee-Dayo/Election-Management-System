@@ -25,12 +25,13 @@ public class Election {
     private Long electionId;
     private String title;
     private Long adminScheduler;
+    private Long reScheduledBy;
     private Long adminCanceller;
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime startDate;
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime endDate;

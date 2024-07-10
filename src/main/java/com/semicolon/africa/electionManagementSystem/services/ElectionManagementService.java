@@ -5,10 +5,7 @@ import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdmin
 import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
-import com.semicolon.africa.electionManagementSystem.exceptions.DeniedAccessException;
-import com.semicolon.africa.electionManagementSystem.exceptions.ElectionNotFoundException;
-import com.semicolon.africa.electionManagementSystem.exceptions.NoCandidateRegisteredException;
-import com.semicolon.africa.electionManagementSystem.exceptions.UserNotFoundException;
+import com.semicolon.africa.electionManagementSystem.exceptions.*;
 import com.semicolon.africa.electionManagementSystem.models.Admin;
 import com.semicolon.africa.electionManagementSystem.models.Candidate;
 import com.semicolon.africa.electionManagementSystem.models.Election;
@@ -17,8 +14,10 @@ import com.semicolon.africa.electionManagementSystem.repositories.AdminRepositor
 import com.semicolon.africa.electionManagementSystem.repositories.CandidateRepository;
 import com.semicolon.africa.electionManagementSystem.repositories.ElectionRepository;
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,13 +28,11 @@ import static com.semicolon.africa.electionManagementSystem.models.Schedule.SCHE
 import static com.semicolon.africa.electionManagementSystem.utils.validations.Validations.verifyEmailAddress;
 
 @Service
-//@AllArgsConstructor
 public class ElectionManagementService implements AdminService{
 
-    private final ElectionRepository electionRepository;
-    private final CandidateRepository candidateRepository;
-    private final AdminRepository adminRepository;
-    private final CandidateService candidateService;
+    private ElectionRepository electionRepository;
+    private AdminRepository adminRepository;
+    private CandidateService candidateService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -44,28 +41,37 @@ public class ElectionManagementService implements AdminService{
         //Login Admin
         //Logout Admin
         //Schedule Election
-        //Register Candidate
         //View Election Results
-        //Calculate Results for Election
-        //Check if Election Category correlates with position contested
         //Get Election Method- Returns Election
         //Cancel Election
         //Get All Elections Scheduled and Cancelled by an Admin
+        //Start Election
 
-    public ElectionManagementService(ElectionRepository electionRepository, CandidateRepository candidateRepository, AdminRepository adminRepository, CandidateService candidateService){
+
+    @Autowired
+    public void setElectionRepository(@Lazy ElectionRepository electionRepository){
         this.electionRepository = electionRepository;
-        this.candidateRepository = candidateRepository;
+    }
+    @Autowired
+    public void setAdminRepository(@Lazy AdminRepository adminRepository){
         this.adminRepository = adminRepository;
+    }
+    @Autowired
+    public void setCandidateService(@Lazy CandidateService candidateService){
         this.candidateService = candidateService;
     }
     @Override
     public ScheduleElectionResponse scheduleElection(ScheduleElectionRequest request) {
+        Admin admin = getAdmin(request.getAdminId());
         ModelMapper mapper = new ModelMapper();
         Election election = mapper.map(request, Election.class);
+        election.setAdminScheduler(admin.getAdminId());
         election.setSchedule(SCHEDULED);
         Election savedElection = electionRepository.save(election);
+        ScheduleElectionResponse response = mapper.map(savedElection, ScheduleElectionResponse.class);
+        response.setMessage(String.format("Election successfully Scheduled by %s %s", admin.getLastName(), admin.getFirstName()));
 
-        return mapper.map(savedElection, ScheduleElectionResponse.class);
+        return response;
     }
 
     @Override
@@ -77,10 +83,7 @@ public class ElectionManagementService implements AdminService{
         return new ModelMapper().map(foundElection,ElectionScheduledResponse.class);
     }
 
-    @Override
-    public RegisterCandidateResponse registerCandidate(RegisterCandidateRequest request) {
-        return candidateService.registerCandidateWith(request);
-    }
+
 
     @Override
     public Election findElectionBy(Long electionId) {
@@ -104,7 +107,8 @@ public class ElectionManagementService implements AdminService{
     @Override
     public CancelElectionResponse cancelElection(CancelElectionRequest request) {
         Election foundElection = findElectionBy(request.getElectionId());
-        Admin admin = adminRepository.findById(request.getAdminId()).orElseThrow(() -> new UserNotFoundException(String.format("Admin id: %d not found",request.getAdminId())));
+        Admin admin = getAdmin(request.getAdminId());
+        foundElection.setAdminCanceller(admin.getAdminId());
         foundElection.setSchedule(CANCELLED);
         CancelElectionResponse response = new ModelMapper().map(foundElection, CancelElectionResponse.class);
         response.setCancellerId(admin.getAdminId());
@@ -117,14 +121,38 @@ public class ElectionManagementService implements AdminService{
 
     @Override
     public RegisterAdminResponse registerAdmin(RegisterAdminRequest request) {
-        verifyEmailAddress(request.getEmail());
+//        verifyEmailAddress(request.getEmail());
         Admin admin = modelMapper.map(request, Admin.class);
-        admin = adminRepository.save(admin);
         admin.setRole(ADMIN);
-        return modelMapper.map(admin, RegisterAdminResponse.class);
+        admin = adminRepository.save(admin);
+        RegisterAdminResponse response = modelMapper.map(admin, RegisterAdminResponse.class);
+        response.setMesssage("Admin registered successfully");
+        return response;
     }
 
+    @Override
+    public Admin getAdmin(Long adminId) {
+        Admin admin = adminRepository.findById(adminId).orElseThrow(
+                () -> new UserNotFoundException(String.format("Admin id: %d not found",adminId)));
+        return admin;
+    }
 
+    private static ModelMapper configure(ModelMapper modelMapper) {
+        modelMapper.typeMap(Candidate.class, RegisterCandidateResponse.class).addMappings(
+                mapper -> {
+                    mapper.map(Candidate::getCandidateId, RegisterCandidateResponse::setCandidateId);
+                    mapper.map(Candidate::getFirstName, RegisterCandidateResponse::setFirstName);
+                    mapper.map(Candidate::getLastName, RegisterCandidateResponse::setLastName);
+                    mapper.map(Candidate::getPartyAffiliation, RegisterCandidateResponse::setPartyAffiliation);
+                    mapper.map(src -> src.getElection().getStartDate(), RegisterCandidateResponse::setStartDate);
+                    mapper.map(src -> src.getElection().getEndDate(), RegisterCandidateResponse::setEndDate);
+                    mapper.map(src -> src.getElection().getCategory(), RegisterCandidateResponse::setCategory);
+                    mapper.map(src -> src.getElection().getSchedule(), RegisterCandidateResponse::setSchedule);
+                    mapper.map(src -> src.getElection().getTitle(), RegisterCandidateResponse::setElectionTitle);
+                }
+        );
+        return modelMapper;
+    }
 
 
 }

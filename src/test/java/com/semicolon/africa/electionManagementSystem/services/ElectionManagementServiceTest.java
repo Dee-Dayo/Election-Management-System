@@ -1,10 +1,7 @@
 package com.semicolon.africa.electionManagementSystem.services;
 
 import com.semicolon.africa.electionManagementSystem.ElectionManagementSystemApplication;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.CancelElectionRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterAdminRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.RegisterCandidateRequest;
-import com.semicolon.africa.electionManagementSystem.dtos.requests.ScheduleElectionRequest;
+import com.semicolon.africa.electionManagementSystem.dtos.requests.*;
 import com.semicolon.africa.electionManagementSystem.dtos.responses.*;
 import com.semicolon.africa.electionManagementSystem.exceptions.DeniedAccessException;
 import com.semicolon.africa.electionManagementSystem.models.Admin;
@@ -37,7 +34,7 @@ class ElectionManagementServiceTest {
     @Test
     public void scheduleElection_ElectionCanBeScheduledTest(){
         ScheduleElectionRequest request = new ScheduleElectionRequest();
-        request.setAdminId(1L);
+        request.setAdminId(10L);
         request.setElectionTitle("LGA Election 3");
         request.setStartDate(LocalDateTime.of(2024, Month.JUNE,20,12,0));
         request.setEndDate(LocalDateTime.of(2024, Month.JUNE,21,12,0));
@@ -78,19 +75,19 @@ class ElectionManagementServiceTest {
     @Test
     public void cancelScheduledElection_electionIsCancelledTest(){
         CancelElectionRequest request = new CancelElectionRequest();
-        request.setAdminId(1L);
+        request.setAdminId(10L);
         request.setElectionId(11L);
         request.setReason("RIGGED BY CANDIDATES");
         CancelElectionResponse response = adminService.cancelElection(request);
         assertThat(response).isNotNull();
-        assertThat(response.getCancellerId()).isEqualTo(1L);
+        assertThat(response.getCancellerId()).isEqualTo(10L);
         assertThat(response.getElection().getElectionId()).isEqualTo(11L);
         assertThat(response.getElection().getCategory()).isEqualTo(NATIONAL);
         assertThat(response.getElection().getSchedule()).isEqualTo(CANCELLED);
 
     }
 
-//    @Sql(scripts = "/adminTestDb/elections.sql")
+    @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public  void registerAdmin_AdminIsRegisteredTest(){
         RegisterAdminRequest request = new RegisterAdminRequest();
@@ -107,9 +104,26 @@ class ElectionManagementServiceTest {
     @Sql(scripts = "/adminTestDb/elections.sql")
     @Test
     public void getAdminDetails_ReturnsAdminTest(){
-        Admin admin = adminService.getAdmin(1L);
+        Admin admin = adminService.getAdmin(10L);
         assertThat(admin).isNotNull();
         assertThat(admin.getEmail()).isEqualTo("gyurkov0@hp.com");
+    }
+
+    @Sql(scripts = "/adminTestDb/elections.sql")
+    @Test
+    public void rescheduleElection_electionIsRescheduledTest(){
+        RescheduleElectionRequest request = new RescheduleElectionRequest();
+        request.setElectionId(11L);
+        request.setReSchedulerId(10L);
+        request.setUpdateStartTime(LocalDateTime.of(2024,8,20,8,0).toString());
+        request.setUpdateEndTime(LocalDateTime.of(2024,8,21,8,0).toString());
+        Election election = adminService.findElectionBy(11L);
+        RescheduleElectionResponse response = adminService.rescheduleElection(request);
+        assertThat(response).isNotNull();
+        assertThat(response.getElectionTitle()).isEqualTo(election.getTitle());
+        assertThat(response.getNewStartDateTime()).isNotEqualTo(election.getStartDate());
+        assertThat(response.getNewEndDateTime()).isNotEqualTo(election.getEndDate());
+        assertThat(response.getElectionId()).isEqualTo(election.getElectionId());
     }
 
 }
